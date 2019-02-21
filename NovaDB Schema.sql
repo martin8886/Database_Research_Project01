@@ -65,7 +65,7 @@ SELECT Distance
 FROM hygclean
 where hipparcosID = 1;
 
-
+drop table Star;
 -- This table will contain all the attribues we might want to display for a given star(s)
 CREATE TABLE IF NOT EXISTS `Star` (
 `HipparcosID` INT NOT NULL,
@@ -74,14 +74,14 @@ CREATE TABLE IF NOT EXISTS `Star` (
 `GlieseID` INT,
 `BayerFlamsteed` VARCHAR(20),
 `ProperName` VARCHAR(30),
-`RightAscension` DECIMAL,
-`Declination` DECIMAL,
+`RA` DECIMAL(7,5),
+`Dec` DECIMAL(7,5),
 `Distance` FLOAT,
 `Magnitude` FLOAT,
 `AbsoluteMagnitude` FLOAT,
 `SpectralType` VARCHAR(20),
 `ColorIndex` FLOAT,
-`ConstellationID` INT,
+`ConstellationID` VARCHAR(20),
 `Luminosity` FLOAT,
 `CompanionID` INT,
 `PrimaryCompanionID` INT,
@@ -97,14 +97,6 @@ CREATE TABLE IF NOT EXISTS `Constellation` (
 `ConstellationName` VARCHAR(20),
 `RightAscension` DECIMAL,
 `Declination` DECIMAL,
--- Convert RA to Longitude
---     Convert RA to decimal: hour + minute/60 + second/3600 = decimal value.
---     Multiply the decimal time by 15 degrees.
---     If > 180, subtract 360 and this gives degrees latitude West
---     If < 180, this gives degrees latitude East
--- Convert Dec to Latitude
---     If > 0, this gives the latitude N
---     If < 0, multiply by -1.  This gives latitude S
 `Longitude` DECIMAL,
 `Latitude` DECIMAL,
 `Shape` GEOMETRY,
@@ -114,3 +106,63 @@ PRIMARY KEY (`ConstellationID`));
 CREATE TABLE IF NOT EXISTS `Resides` (
 `Star_HipparcosID` INT,
 `Constellation_ConstellationID` INT);
+
+-- Populate data into the Star table
+INSERT INTO `Star` (`HipparcosID`, `HenryDraperID`, `HarvardRevisedID`, `GlieseID`, `BayerFlamsteed`, `ProperName`,
+`RA`, `Dec`, `Distance`, `Magnitude`, `AbsoluteMagnitude`, `SpectralType`, `ColorIndex`,
+`ConstellationID`, `Luminosity`, `CompanionID`, `PrimaryCompanionID`, `BaseName`, `VariableStarID`, `VariableMinMagnitude`,
+`VariableMaxMagnitude`)  
+SELECT `HipparcosID`, `HenryDraperID`, `HarvardRevisedID`, `GlieseID`, `BayerFlamsteed`, `ProperName`,
+`RA`, `Dec`, `Distance`, `Magnitude`, `AbsoluteMagnitude`, `SpectralType`, `ColorIndex`,
+`Constellation`, `Luminosity`, `CompanionID`, `PrimaryCompanionID`, `BaseName`, `VariableStarID`, `VariableMinMagnitude`,
+`VariableMaxMagnitude`
+FROM `hygClean`;
+
+-- Test if it loaded correctly
+SELECT DISTINCT ConstellationID
+FROM Star
+
+-- Convert RA to Longitude
+--     Convert RA to decimal: hour + minute/60 + second/3600 = decimal value.  The data is already in decimal format.
+--     Multiply the decimal time by 15 degrees.
+--     If > 180, subtract 360 and this gives degrees latitude West
+--     If < 180, this gives degrees latitude East
+
+
+DELIMITER $$
+CREATE FUNCTION RA2Long(`RA` DECIMAL(7,5))
+RETURNS DECIMAL(8,5)
+DETERMINISTIC
+	BEGIN
+		DECLARE longitude DECIMAL(8,5);
+		IF (`RA`*15 >= 180) THEN
+			SET longitude = CAST(`RA`*15 - 360 AS DECIMAL(8,5));
+		ELSE
+			SET longitude = CAST(`RA`*15 AS DECIMAL(8,5));
+		END IF;
+	RETURN (longitude);
+END$$
+DELIMITER ;
+
+-- Convert Dec to Latitude
+--     If > 0, this gives the latitude N
+--     If < 0, multiply by -1.  This gives latitude S
+DELIMITER $$
+CREATE FUNCTION Dec2Lat(`Dec` DECIMAL(7,5))
+RETURNS DECIMAL(7,5)
+DETERMINISTIC
+	BEGIN
+		DECLARE latitude DECIMAL(7,5);
+		IF (`Dec` < 0) THEN
+			SET latitude = CAST(`Dec` AS DECIMAL(7, 5));
+		ELSE
+			SET latitude = CAST(`Dec` AS DECIMAL(7, 5));
+		END IF;
+	RETURN (latitude);
+END$$
+DELIMITER ;
+
+-- Test the functionality
+SELECT `RA`, `Dec`, RA2Long(`RA`), Dec2Lat(`Dec`)
+FROM Star
+WHERE HipparcosID < 100;
