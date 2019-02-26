@@ -98,8 +98,8 @@ PRIMARY KEY (`HipparcosID`));
 CREATE TABLE IF NOT EXISTS `Constellation` (
 `ConstellationID` INT,
 `ConstellationName` VARCHAR(20),
-`RightAscension` DECIMAL,
-`Declination` DECIMAL,
+`RightAscension` DECIMAL(20,8),
+`Declination` DECIMAL(20,8),
 `Longitude` DECIMAL(10,5),
 `Latitude` DECIMAL(10,5),
 `Shape` GEOMETRY,
@@ -133,15 +133,15 @@ FROM Star
 
 
 DELIMITER $$
-CREATE FUNCTION RA2Long(`RA` DECIMAL(7,5))
+CREATE FUNCTION RA2Long(`RightAscension` DECIMAL(7,5))
 RETURNS DECIMAL(8,5)
 DETERMINISTIC
 	BEGIN
 		DECLARE longitude DECIMAL(8,5);
-		IF (`RA`*15 >= 180) THEN
-			SET longitude = CAST(`RA`*15 - 360 AS DECIMAL(8,5));
+		IF (`RightAscension`*15 >= 180) THEN
+			SET longitude = CAST(`RightAscension`*15 - 360 AS DECIMAL(8,5));
 		ELSE
-			SET longitude = CAST(`RA`*15 AS DECIMAL(8,5));
+			SET longitude = CAST(`RightAscension`*15 AS DECIMAL(8,5));
 		END IF;
 	RETURN (longitude);
 END$$
@@ -151,21 +151,22 @@ DELIMITER ;
 --     If > 0, this gives the latitude N
 --     If < 0, multiply by -1.  This gives latitude S
 DELIMITER $$
-CREATE FUNCTION Dec2Lat(`Dec` DECIMAL(7,5))
+CREATE FUNCTION Dec2Lat(`Declination` DECIMAL(7,5))
 RETURNS DECIMAL(7,5)
 DETERMINISTIC
 	BEGIN
 		DECLARE latitude DECIMAL(7,5);
-		IF (`Dec` < 0) THEN
-			SET latitude = CAST(`Dec` AS DECIMAL(7, 5));
+		IF (`Declination` < 0) THEN
+			SET latitude = CAST(`Declination` AS DECIMAL(7, 5));
 		ELSE
-			SET latitude = CAST(`Dec` AS DECIMAL(7, 5));
+			SET latitude = CAST(`Declination` AS DECIMAL(7, 5));
 		END IF;
 	RETURN (latitude);
 END$$
 DELIMITER ;
 
+
+
 -- Test the functionality
-SELECT `RA`, `Dec`, RA2Long(`RA`), Dec2Lat(`Dec`)
-FROM Star
-WHERE HipparcosID < 100;
+	SELECT `RightAscension`, `Declination`, RA2Long(`RightAscension`), Dec2Lat(`Declination`)
+	FROM constellation;	
