@@ -95,12 +95,17 @@ PRIMARY KEY (`HipparcosID`));
 CREATE TABLE IF NOT EXISTS `Constellation` (
 `ConstellationID` INT,
 `ConstellationName` VARCHAR(20),
-`RightAscension` DECIMAL,
-`Declination` DECIMAL,
-`Longitude` DECIMAL,
-`Latitude` DECIMAL,
 `Shape` GEOMETRY,
 PRIMARY KEY (`ConstellationID`));
+
+CREATE TABLE IF NOT EXISTS `Boundaries` (
+`BoundaryID` INT,
+`ConstellationID` VARCHAR(20),
+`RightAscension` DECIMAL(7,5),
+`Declination` DECIMAL(7,5),
+`Longitude` DECIMAL(8,5),
+`Latitude` DECIMAL(7,5),
+PRIMARY KEY (`BoundaryID`));
 
 -- This table is where we relate stars to constellation.  Star X resides in Constellation Y
 CREATE TABLE IF NOT EXISTS `Resides` (
@@ -166,3 +171,8 @@ DELIMITER ;
 SELECT `RA`, `Dec`, RA2Long(`RA`), Dec2Lat(`Dec`)
 FROM Star
 WHERE HipparcosID < 100;
+
+-- Test if constellation data loaded correctly
+SELECT *
+FROM Constellation
+WHERE ConstellationName = "AND";
