@@ -1,4 +1,3 @@
-Create Database novadb;
 USE novadb;
 -- When loading in the data, make sure 'local_infile' is set to on.  Check with the following command:
 SHOW VARIABLES LIKE 'local_infile';
@@ -9,7 +8,7 @@ SHOW VARIABLES LIKE 'secure_file_priv';
 -- This gives a file path.  Move the hygClean.csv to that path.
 
 -- Often times when creating the hygClean table for the import, I'd get it wrong and have to drop it, then re-create differently.
-drop table `hygClean`;
+-- DROP TABLE `hygClean`;
 
 -- Create a table to hold all of the data from hygClean.csv
 CREATE TABLE IF NOT EXISTS `hygClean` (
@@ -60,11 +59,10 @@ LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
 -- Make a test query to see if the data loaded in properly
-SELECT Distance
-FROM hygclean
-where hipparcosID = 1;
+-- SELECT Distance
+-- FROM hygclean
+-- WHERE hipparcosID = 1;
 
-drop table Star;
 -- This table will contain all the attribues we might want to display for a given star(s)
 CREATE TABLE IF NOT EXISTS `Star` (
 `HipparcosID` INT NOT NULL,
@@ -92,12 +90,12 @@ PRIMARY KEY (`HipparcosID`));
 
 -- This table will contain the constellation information to include coordinates
 -- DROP TABLE `Constellation`;
-
 CREATE TABLE IF NOT EXISTS `Constellation` (
 `ConstellationID` VARCHAR(200),
 `ConstellationName` VARCHAR(20),
 `Shape` GEOMETRY,
 PRIMARY KEY (`ConstellationID`));
+UPDATE Constellation SET shape = ST_GeomFromText(ST_AsText(shape), 4326, 'axis-order=lat-long');
 
 CREATE TABLE IF NOT EXISTS `Boundaries` (
 `BoundaryID` INT,
@@ -125,16 +123,14 @@ SELECT `HipparcosID`, `HenryDraperID`, `HarvardRevisedID`, `GlieseID`, `BayerFla
 FROM `hygClean`;
 
 -- Test if it loaded correctly
-SELECT DISTINCT ConstellationID
-FROM Star
+-- SELECT DISTINCT ConstellationID
+-- FROM Star
 
 -- Convert RA to Longitude
 --     Convert RA to decimal: hour + minute/60 + second/3600 = decimal value.  The data is already in decimal format.
 --     Multiply the decimal time by 15 degrees.
 --     If > 180, subtract 360 and this gives degrees latitude West
 --     If < 180, this gives degrees latitude East
-
-
 DELIMITER $$
 CREATE FUNCTION RA2Long(`RA` DECIMAL(7,5))
 RETURNS DECIMAL(8,5)
@@ -169,11 +165,23 @@ END$$
 DELIMITER ;
 
 -- Test the functionality
-SELECT `RA`, `Dec`, RA2Long(`RA`), Dec2Lat(`Dec`)
-FROM Star
-WHERE HipparcosID < 100;
+-- SELECT `RA`, `Dec`, RA2Long(`RA`), Dec2Lat(`Dec`)
+-- FROM Star
+-- WHERE HipparcosID < 100;
 
--- Test if constellation data loaded correctly
-SELECT *
-FROM Constellation
-WHERE ConstellationName = "AND";
+-- Identify ConstellationIDs
+-- SELECT DISTINCT ConstellationID
+-- FROM Star
+-- ORDER BY ConstellationID ASC;
+
+-- SELECT DISTINCT ConstellationID
+-- FROM Boundaries;
+
+-- Collect coordinates from Boundaries
+-- SELECT
+-- 	ConstellationID,
+-- 	BoundaryID,
+--  Longitude,
+--  Latitude
+-- FROM Boundaries
+-- WHERE ConstellationID = "vul";
