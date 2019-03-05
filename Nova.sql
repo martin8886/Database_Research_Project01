@@ -7,10 +7,8 @@ SHOW VARIABLES LIKE 'local_infile';
 SHOW VARIABLES LIKE 'secure_file_priv';
 -- This gives a file path.  Move the hygClean.csv to that path.
 
--- Often times when creating the hygClean table for the import, I'd get it wrong and have to drop it, then re-create differently.
--- DROP TABLE `hygClean`;
 
--- Create a table to hold all of the data from hygClean.csv
+-- Create a table to hold all of the data from hygClean.csv.
 CREATE TABLE IF NOT EXISTS `hygClean` (
 `HipparcosID` INT NOT NULL,
 `HenryDraperID` INT NULL,
@@ -58,12 +56,8 @@ FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
 
--- Make a test query to see if the data loaded in properly
--- SELECT Distance
--- FROM hygclean
--- WHERE hipparcosID = 1;
 
--- This table will contain all the attribues we might want to display for a given star(s)
+-- This table will contain all the attribues we might want to display for a given star(s).
 CREATE TABLE IF NOT EXISTS `Star` (
 `HipparcosID` INT NOT NULL,
 `HenryDraperID` INT,
@@ -88,15 +82,17 @@ CREATE TABLE IF NOT EXISTS `Star` (
 `VariableMaxMagnitude` FLOAT,
 PRIMARY KEY (`HipparcosID`));
 
--- This table will contain the constellation information to include coordinates
--- DROP TABLE `Constellation`;
+
+-- This table will contain the constellation information to including it's shape
 CREATE TABLE IF NOT EXISTS `Constellation` (
-`ConstellationID` VARCHAR(200),
+`ConstellationID` VARCHAR(20),
 `ConstellationName` VARCHAR(20),
 `Shape` GEOMETRY,
 PRIMARY KEY (`ConstellationID`));
 UPDATE Constellation SET shape = ST_GeomFromText(ST_AsText(shape), 4326, 'axis-order=lat-long');
 
+
+-- This table will have the coordinates in RA & Dec, and also Lat & Long that define the boundaries of each constellation.
 CREATE TABLE IF NOT EXISTS `Boundaries` (
 `BoundaryID` INT,
 `ConstellationID` VARCHAR(20),
@@ -105,11 +101,16 @@ CREATE TABLE IF NOT EXISTS `Boundaries` (
 `Longitude` DECIMAL(8,5),
 `Latitude` DECIMAL(7,5),
 PRIMARY KEY (`BoundaryID`));
+-- This table is populated using the import wizard (right click on the table in the Navigator under SCHEMAS and select
+-- "Table Data Import Wizard" and select the "ConstellationCoordinate.csv."  The only tricky part here is that
+-- ConstellationName is associated with ConstellationID and Index (or BoundaryID) is associated with BoundaryID.
 
--- This table is where we relate stars to constellation.  Star X resides in Constellation Y
+
+-- This table is where we relate stars to constellation.  Star X resides in Constellation Y.
 CREATE TABLE IF NOT EXISTS `Resides` (
-`Star_HipparcosID` INT,
-`Constellation_ConstellationID` INT);
+`HipparcosID` INT,
+`ConstellationID` VARCHAR(20));
+
 
 -- Populate data into the Star table
 INSERT INTO `Star` (`HipparcosID`, `HenryDraperID`, `HarvardRevisedID`, `GlieseID`, `BayerFlamsteed`, `ProperName`,
@@ -122,9 +123,6 @@ SELECT `HipparcosID`, `HenryDraperID`, `HarvardRevisedID`, `GlieseID`, `BayerFla
 `VariableMaxMagnitude`
 FROM `hygClean`;
 
--- Test if it loaded correctly
--- SELECT DISTINCT ConstellationID
--- FROM Star
 
 -- Convert RA to Longitude
 --     Convert RA to decimal: hour + minute/60 + second/3600 = decimal value.  The data is already in decimal format.
@@ -164,24 +162,14 @@ DETERMINISTIC
 END$$
 DELIMITER ;
 
--- Test the functionality
--- SELECT `RA`, `Dec`, RA2Long(`RA`), Dec2Lat(`Dec`)
--- FROM Star
--- WHERE HipparcosID < 100;
 
--- Identify ConstellationIDs
--- SELECT DISTINCT ConstellationID
--- FROM Star
--- ORDER BY ConstellationID ASC;
-
--- SELECT DISTINCT ConstellationID
--- FROM Boundaries;
-
--- Collect coordinates from Boundaries
--- SELECT
--- 	ConstellationID,
--- 	BoundaryID,
---  Longitude,
---  Latitude
--- FROM Boundaries
--- WHERE ConstellationID = "vul";
+-- Populate data into the Resides table.
+INSERT INTO Resides 
+SELECT
+	Star.HipparcosID,
+    Star.ConstellationID
+FROM
+	Star,
+    Constellation
+WHERE
+	Star.ConstellationID = Constellation.ConstellationID;
