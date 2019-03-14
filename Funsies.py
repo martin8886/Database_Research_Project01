@@ -19,7 +19,7 @@ except mysql.connector.Error as err:
 else:
   conn.close()
 
-  # Sample query
+# Sample query
 conn = mysql.connector.connect(user='root', password='Drew$kiWi1kins09!', host='127.0.0.1', database='NovaDB')
 cursor = conn.cursor()
 
@@ -39,10 +39,10 @@ result = pd.DataFrame(cursor.fetchall(), columns= ["HipparcosID", "HenryDraperID
 
 #result = pd.DataFrame(cursor.fetchall(), columns= ["ConstellationID", "ConstellationName", "Shape"])
 #print(result[["ConstellationID", "ConstellationName"]])
+
 cursor.close()
 conn.close()
 
-# Make the 3D plot
 from mpl_toolkits.mplot3d import Axes3D
 
 # Define the 3D figure
@@ -58,24 +58,24 @@ zs = list(pd.to_numeric(result["Z"]))
 ax.scatter(xs, ys, zs, c= "w", depthshade= False)
 
 # The axis wont be centered initially, so let's fix that.  Start by getting the max value on each dimension
-xlim = max(abs(ax.get_xlim()))
-ylim = max(abs(ax.get_ylim()))
-zlim = max(abs(ax.get_zlim()))
+xlim = max(np.abs(ax.get_xlim()))
+ylim = max(np.abs(ax.get_ylim()))
+zlim = max(np.abs(ax.get_zlim()))
 # Then set the axis on each dimension such that 0 is in the middle of the max value
 ax.set_xlim(-xlim, xlim)
 ax.set_ylim(-ylim, ylim)
 ax.set_zlim(-zlim, zlim)
 
 # Draw a plane at z= 0
-xx, yy = np.meshgrid(np.arange(-xlim, xlim, 5), np.arange(-ylim, ylim, 5))
+xx, yy = np.meshgrid(np.arange(-xlim, xlim, 100), np.arange(-ylim, ylim, 100))
 z = xx * 0
-ax.plot_wireframe(xx, yy, z, alpha=0.5, rcount= 1000, ccount= 1000, colors= "w")
+ax.plot_wireframe(xx, yy, z, alpha=0.5, rcount= 5, ccount= 5, colors= "w")
 
 
 # Draw lines from the z=0 plane to the star
 for i,j,k in zip(xs, ys, zs):
-    if k >= 0: ax.plot([i,i],[j,j],[0,k],color = 'b', alpha= .1)
-    else: ax.plot([i,i],[j,j],[0,k], color = 'r', alpha= .1)
+   if k >= 0: ax.plot([i,i],[j,j],[0,k],color = 'b', alpha= .3)
+   else: ax.plot([i,i],[j,j],[0,k], color = 'r', alpha= .3)
 
 ax.set_facecolor('black')
 ax.grid(False)
