@@ -1,0 +1,36 @@
+
+NOTES
+
+This uses tables and one iframe. 
+
+The intent of the iframe is to create a site within a site to allow queried data to be 
+retrieved on active page.
+
+Form is used to collect the data, this is also the reference point which will connect to our .py with flask
+Used by referencing @app.route
+
+
+
+#####################
+to our .py for use with flask, this will pull end-user input
+
+@app.route('/handle_data', methods=['POST'])
+def handle_data():
+    projectpath = request.form['projectFilepath']
+    # your code
+    # return a response
+
+
+##################
+
+to our html form, a reference for the form, form holds the user box inputs 
+
+<form action="{{ url_for('handle_data') }}" method="post">
+    <input type="text" name="projectFilepath">
+    <input type="submit">
+</form>
+
+
+############# may need bokeh package to incorporate visualizations without javascript
+
+https://hub.mybinder.org/user/bokeh-bokeh-notebooks-1ug5jf6l/notebooks/tutorial/00%20-%20Introduction%20and%20Setup.ipynb
