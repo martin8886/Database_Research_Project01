@@ -6,11 +6,10 @@
 			<style>
 				body {background-color: #5a5175;}
 				table {background-color: #736c89;
-					color:white; width:80%; 
-    					margin-left:10%; 
+					color:white; width:80%;
+    					margin-left:10%;
     					margin-right:10%}
 				th {align:left;}
-
 			</style>
 
 	</head>
@@ -29,143 +28,164 @@
  <tr>
 	<th align="left" width=300>
 		<form>
-		<br> 
+		<br>
   		<b>Hipparcos ID:</b>
-  		<input type="number" name="quantity" >
-		<br><br>
+  		<input type="number" name="HipparcosID" >
+		<br>
   		<b>Constellation:</b>
 		<Select name="Constellation">
-		<option value="Andromeda">Andromeda</option>
+			<option value=""></option>
+			<option value="Andromeda">Andromeda</option>
   		<option value="Antlia">Antlia</option>
   		<option value="Apus">Apus</option>
- 		<option value="Aquila">Aquila</option>
-		<option value="Aquarius">Aquarius</option>
+ 			<option value="Aquila">Aquila</option>
+			<option value="Aquarius">Aquarius</option>
   		<option value="Ara">Ara</option>
   		<option value="Aries">Aries</option>
- 		<option value="Auriga">Auriga</option>
-		<option value="Bootes">Bootes</option>
+ 			<option value="Auriga">Auriga</option>
+			<option value="Bootes">Bootes</option>
   		<option value="Caelum">Caelum</option>
   		<option value="Camelopardalis">Camelopardalis</option>
- 		<option value="Capricornus">Capricornus</option>
-		<option value="Carina">Carina</option>
+ 			<option value="Capricornus">Capricornus</option>
+			<option value="Carina">Carina</option>
   		<option value="Cassiopeia">Cassiopeia</option>
   		<option value="Centaurus">Centaurus</option>
- 		<option value="Cepheus">Cepheus</option>
-		<option value="Cetus">Cetus</option>
+ 			<option value="Cepheus">Cepheus</option>
+			<option value="Cetus">Cetus</option>
   		<option value="Chamaeleon">Chamaeleon</option>
   		<option value="Circinus">Circinus</option>
- 		<option value="Canis Major">Canis Major</option>
-		<option value="Canis Minor">Canis Minor</option>
+ 			<option value="Canis Major">Canis Major</option>
+			<option value="Canis Minor">Canis Minor</option>
   		<option value="Cancer">Cancer</option>
   		<option value="Columba">Columba</option>
- 		<option value="Coma Berenicies">Coma Berenicies</option>
-		<option value="Corona Australis">Corona Australis</option>
+ 			<option value="Coma Berenicies">Coma Berenicies</option>
+			<option value="Corona Australis">Corona Australis</option>
   		<option value="Corona Borealis">Corona Borealis</option>
   		<option value="Crater">Crater</option>
- 		<option value="Crux">Crux</option>
-		<option value="Corvus">Corvus</option>
+ 			<option value="Crux">Crux</option>
+			<option value="Corvus">Corvus</option>
   		<option value="Canes Vanatici">Canes Vanatici</option>
   		<option value="Cygnus">Cygnus</option>
- 		<option value="Delphinus">Delphinus</option>
- 		<option value="Dorado">Dorado</option>
- 		<option value="Draco">Draco</option>
- 		<option value="Equuleus">Equuleus</option>
- 		<option value="Eridanus">Eridanus</option>
- 		<option value="Fornax">Fornax</option>
- 		<option value="Gemini">Gemini</option>
- 		<option value="Grus">Grus</option>
- 		<option value="Hercules">Hercules</option>
- 		<option value="Horologium">Horologium</option>
- 		<option value="Hydra">Hydra</option>
- 		<option value="Hydrus">Hydrus</option>
- 		<option value="Indus">Indus</option>
- 		<option value="Lacerta">Lacerta</option>
- 		<option value="Leo">Leo</option>
- 		<option value="Lepus">Lepus</option>
- 		<option value="Libra">Libra</option>
- 		<option value="Leo Minor">Leo Minor</option>
- 		<option value="Lupus">Lupus</option>
- 		<option value="Lynx">Lynx</option>
- 		<option value="Lyra">Lyra</option>
- 		<option value="Mensa">Mensa</option>
- 		<option value="Microscopium">Microscopium</option>
- 		<option value="Monoceros">Monoceros</option>
- 		<option value="Musca">Musca</option>
- 		<option value="Norma">Norma</option>
- 		<option value="Octans">Octans</option>
- 		<option value="Ophiuchus">Ophiuchus</option>
- 		<option value="Orion">Orion</option>
- 		<option value="Pavo">Pavo</option>
- 		<option value="Pegasus">Pegasus</option>
- 		<option value="Perseus">Perseus</option>
- 		<option value="Phoenix">Phoenix</option>
- 		<option value="Pictor">Pictor</option>
- 		<option value="Piscis Austrinus">Piscis Austrinus</option>
- 		<option value="Pisces">Pisces</option>
- 		<option value="Puppis">Puppis</option>
- 		<option value="Phxis">Phxis</option>
- 		<option value="Reticulum">Reticulum</option>
- 		<option value="Sculptor">Sculptor</option>
- 		<option value="Scropius">Scropius</option>
- 		<option value="Scutum">Scutum</option>
- 		<option value="Serpens Caput">Serpens Caput</option>
- 		<option value="Serpens Cauda">Serpens Cauda</option>
- 		<option value="Sextans">Sextans</option>
- 		<option value="Sagitta">Sagitta</option>
- 		<option value="Sagittarius">Sagittarius</option>
- 		<option value="Taurus">Taurus</option>
- 		<option value="Telescopium">Telescopium</option>
- 		<option value="Triangulum Australe">Triangulum Australe</option>
- 		<option value="Triangulum">Triangulum</option>
- 		<option value="Tucana">Tucana</option>
- 		<option value="Ursa Major">Ursa Major</option>
- 		<option value="Ursa Minor">Ursa Minor</option>
- 		<option value="Vela">Vela</option>
- 		<option value="Virgo">Virgo</option>
- 		<option value="Volans">Volans</option>
- 		<option value="Vulpecula">Vulpecula</option>
+ 			<option value="Delphinus">Delphinus</option>
+ 			<option value="Dorado">Dorado</option>
+ 			<option value="Draco">Draco</option>
+ 			<option value="Equuleus">Equuleus</option>
+ 			<option value="Eridanus">Eridanus</option>
+ 			<option value="Fornax">Fornax</option>
+ 			<option value="Gemini">Gemini</option>
+ 			<option value="Grus">Grus</option>
+ 			<option value="Hercules">Hercules</option>
+ 			<option value="Horologium">Horologium</option>
+ 			<option value="Hydra">Hydra</option>
+ 			<option value="Hydrus">Hydrus</option>
+ 			<option value="Indus">Indus</option>
+ 			<option value="Lacerta">Lacerta</option>
+ 			<option value="Leo">Leo</option>
+ 			<option value="Lepus">Lepus</option>
+ 			<option value="Libra">Libra</option>
+ 			<option value="Leo Minor">Leo Minor</option>
+ 			<option value="Lupus">Lupus</option>
+ 			<option value="Lynx">Lynx</option>
+ 			<option value="Lyra">Lyra</option>
+ 			<option value="Mensa">Mensa</option>
+ 			<option value="Microscopium">Microscopium</option>
+ 			<option value="Monoceros">Monoceros</option>
+ 			<option value="Musca">Musca</option>
+ 			<option value="Norma">Norma</option>
+ 			<option value="Octans">Octans</option>
+ 			<option value="Ophiuchus">Ophiuchus</option>
+ 			<option value="Orion">Orion</option>
+ 			<option value="Pavo">Pavo</option>
+ 			<option value="Pegasus">Pegasus</option>
+ 			<option value="Perseus">Perseus</option>
+ 			<option value="Phoenix">Phoenix</option>
+ 			<option value="Pictor">Pictor</option>
+ 			<option value="Piscis Austrinus">Piscis Austrinus</option>
+ 			<option value="Pisces">Pisces</option>
+ 			<option value="Puppis">Puppis</option>
+ 			<option value="Phxis">Phxis</option>
+ 			<option value="Reticulum">Reticulum</option>
+ 			<option value="Sculptor">Sculptor</option>
+ 			<option value="Scropius">Scropius</option>
+ 			<option value="Scutum">Scutum</option>
+ 			<option value="Serpens Caput">Serpens Caput</option>
+ 			<option value="Serpens Cauda">Serpens Cauda</option>
+ 			<option value="Sextans">Sextans</option>
+ 			<option value="Sagitta">Sagitta</option>
+ 			<option value="Sagittarius">Sagittarius</option>
+ 			<option value="Taurus">Taurus</option>
+ 			<option value="Telescopium">Telescopium</option>
+ 			<option value="Triangulum Australe">Triangulum Australe</option>
+ 			<option value="Triangulum">Triangulum</option>
+ 			<option value="Tucana">Tucana</option>
+ 			<option value="Ursa Major">Ursa Major</option>
+ 			<option value="Ursa Minor">Ursa Minor</option>
+ 			<option value="Vela">Vela</option>
+ 			<option value="Virgo">Virgo</option>
+ 			<option value="Volans">Volans</option>
+ 			<option value="Vulpecula">Vulpecula</option>
 		</select>
+		<br>
+		<b>Spectral Type:</b>
+			<Select name="SpectralType">
+				<option value=""></option>
+				<option value="O">O</option>
+				<option value="B">B</option>
+				<option value="A">A</option>
+				<option value="F">F</option>
+				<option value="G">G</option>
+				<option value="K">K</option>
+				<option value="M">M</option>
+				<option value="C">C</option>
+				<option value="U">Unknown</option>
+			</select>
 		<br><br>
 		<b>Coordinates:</b>
+		<br>
+		<!-- This needs a rework.  We need to be able to put in real RA's in the form of
+		HH MM SS.SSSS.  Each field will likely need its own name.  Once RA is input in this
+		format, the next field (for decimal RA) needs to autopopulate with the converted
+		RA in decimal.  Finally, we'll need a +/- field to give the user a range to search by. -->
+		<b>RA:</b>
+			<input type="number" name="RA_Hours_Minutes_Seconds?" size="6">
+	&nbsp;
+			<input type="number" name="RA_Decimal" size="6">
+	&nbsp;
+			<input type="number" name="RA_PlusMinus" size="6">
+		<br>
+		<!-- Like RA, this input will also need a +/- to give a search area -->
+		<b>Dec:</b> <input type="number" name="Dec" >
 		<br><br>
-  		RA: <input type="number" name="quantity" size="6">
-		&nbsp;
-  		<input type="number" name="quantity" size="6"> 
-		&nbsp;
-  		<input type="number" name="quantity" size="6"> 
+		<b>Distance:</b>  <input type="number" name="Distance" >
 		<br><br>
-		Dec: <input type="number" name="quantity" >
-		<br><br>
-		Distance:  <input type="number" name="quantity" >
-		<br><br>
-		Magnitude:  <input type="number" name="quantity" >
-		<br><br>
-		Abs. Mag:  <input type="number" name="quantity" >
-		<br><br>
-		Luminosity:  <input type="number" name="quantity" >
+		<b>Magnitude:</b>  <input type="number" name="Magnitude" >
+		<br>
+		<b>Abs. Mag:</b>  <input type="number" name="Absolute_Magnitude" >
+		<br>
+		<b>Luminosity:</b>  <input type="number" name="Luminosity" >
 		<br><br>
 		<b>Variable Magnitude:</b>
-		<br><br>
-		Min:  <input type="number" name="quantity" > 
-		<br><br>
-		Max:  <input type="number" name="quantity" > 
-		<br><br>
-		Star System Name:
 		<br>
-  		<input type="number" name="quantity" >
-		<br><br>
-		Companion ID:
+		<b>Min:</b>  <input type="number" name="Min_Magnitude" >
 		<br>
-  		<input type="number" name="quantity" >
+		<b>Max:</b>  <input type="number" name="Max_Magnitude" >
+		<br><br>
+		<b>Star System Name:</b>
+		<br>
+  		<input type="number" name="Star_System_Name" >
+		<br>
+		<b>Companion ID:</b>
+		<br>
+  		<input type="number" name="CompanionID" >
 		<br><br>
 		<center>
-		<input type="submit" value="New Search">
+		<input type="submit" value="Search">
 		</center>
   		</form>
 	</th>
 	<th width=800>
 	<iframe width=100% height=500>
-		
+
 	<iframe>
 	</th>
  </tr>
@@ -176,4 +196,3 @@
 
 </body>
 </html>
-
