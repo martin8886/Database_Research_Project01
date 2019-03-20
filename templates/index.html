@@ -9,31 +9,53 @@
 					color:white; width:80%;
     					margin-left:10%;
     					margin-right:10%}
-				th {align:left;}
+				td {align:left;}
+				p {font-family:myFirstFont;
+				   color:white;
+				   text-align:center;
+				   font-size: 26;}
+				@font-face {font-family: myFirstFont;
+  					src: url(andromeda.ttf);}
+				td.names{font-family:myFirstFont;
+					align:right;
+					background-color: #414189;}				
+				.container {position: relative;
+	  				text-align: center;
+  					color: white;}
+				.top {font-family: myFirstFont;
+					font-size: 75;
+  					position: absolute;
+ 					 top: 50px;
+  					left: 150px;
+					}
 			</style>
 
 	</head>
 
 <body>
 
-<br>
-<br>
+		<!-- This needs a rework.  We need to be able to put in real RA's in the form of
+		HH MM SS.SSSS.  Each field will likely need its own name.  Once RA is input in this
+		format, the next field (for decimal RA) needs to autopopulate with the converted
+		RA in decimal.  Finally, we'll need a +/- field to give the user a range to search by. -->
 
-<table>
+<table> 
+<tr><td><p><b>Explore the Cosmos</b></p></td>
+	<td rowspan ="10"><div class="container" style="width:100%;"><img src="download.gif" width=100% height=100%><div class="top">Nova DB</div></div> </td>
+</tr>
 
- <tr bgcolor=#333399>
-	<th>NOVA Query</th>
-	<th colspan="2">Output</th>
- </tr>
- <tr>
-	<th align="left" width=300>
-		<form action="{{ url_for('User_Query') }}" method="post">
+<tr><td>
+		<form>
 		<br>
-  		<b>Hipparcos ID:</b>
-  		<input type="number" name="HipparcosID" >
+  		<b>Hipparcos ID:</b><br>
+  		<input type="number" name="HipparcosID" placeholder="1-10023" min="1" max="10023">
+		
+</td></tr>
+<tr><td>
 		<br>
   		<b>Constellation:</b>
-		<Select name="Constellation">
+		<br>
+		<Select name="Constellation" ">
 			<option value=""></option>
 			<option value="Andromeda">Andromeda</option>
   		<option value="Antlia">Antlia</option>
@@ -103,7 +125,7 @@
  			<option value="Piscis Austrinus">Piscis Austrinus</option>
  			<option value="Pisces">Pisces</option>
  			<option value="Puppis">Puppis</option>
- 			<option value="Pyxis">Phxis</option>
+ 			<option value="Phxis">Phxis</option>
  			<option value="Reticulum">Reticulum</option>
  			<option value="Sculptor">Sculptor</option>
  			<option value="Scropius">Scropius</option>
@@ -125,8 +147,12 @@
  			<option value="Volans">Volans</option>
  			<option value="Vulpecula">Vulpecula</option>
 		</select>
+
+</td></tr>
+<tr><td>
 		<br>
 		<b>Spectral Type:</b>
+		<br>
 			<Select name="SpectralType">
 				<option value=""></option>
 				<option value="O">O</option>
@@ -139,64 +165,62 @@
 				<option value="C">C</option>
 				<option value="U">Unknown</option>
 			</select>
-		<br><br>
-		<b>Coordinates:</b>
 		<br>
-		<!-- This needs a rework.  We need to be able to put in real RA's in the form of
-		HH MM SS.SSSS.  Each field will likely need its own name.  Once RA is input in this
-		format, the next field (for decimal RA) needs to autopopulate with the converted
-		RA in decimal.  Finally, we'll need a +/- field to give the user a range to search by. -->
-		<b>RA:</b>
-			<input type="number" name="RA_Hours_Minutes_Seconds" size="6">
+
+</td></tr>
+<tr><td>
+		<br><b>Distance: </b><br>
+		Between &nbsp;
+		<input type="number" name="CompanionID" size="4" placeholder="min"> And
+		<input type="number" name="CompanionID" size="4" placeholder="max">
+		<br>
+</td></tr>
+
+<tr><td>
+	<b>Coordinates:</b> <br>
+	RA: 
+	<input type="number" name="RA_Hours_Minutes_Seconds?" size="4" placeholder="     X    ">
 	&nbsp;
-			<input type="number" name="RA_Decimal" size="6">
+	<input type="number" name="RA_Decimal" size="4" placeholder="     Y    ">
 	&nbsp;
-			<input type="number" name="RA_PlusMinus" size="6">
+	<input type="number" name="RA_PlusMinus" size="4" placeholder="     Z    ">
+
+</td></tr>
+<tr><td>
+	Between
+	<input type="number" name="ValueIncrement" size="4" placeholder="min">&nbsp; And
+	<input type="number" name="PlusMinus" size="4" placeholder="max">
+</td></tr>
+<tr><td>
+	Dec:<br>
+	Between &nbsp;
+	<input type="number" name="ValueIncrement2" size="4" placeholder="min">&nbsp; And
+
+	<input type="number" name="PlusMinus2" size="4" placeholder="max">
+</td></tr>
+<tr><td>
+	Magnitude:<br>
+	Between &nbsp;
+ 	<input type="number" name="Magnitude" size="4" placeholder="min"> And
+	<input type="number" name="PlusMinus2" size="4" placeholder="max">
+</td></tr>
+<tr><td>
 		<br>
-		<!-- Like RA, this input will also need a +/- to give a search area -->
-		<b>Dec:</b> <input type="number" name="Dec" >
-		<br><br>
-		<b>Distance:</b>  <input type="number" name="Distance" >
-		<br><br>
-		<b>Magnitude:</b>  <input type="number" name="Magnitude" >
-		<br>
-		<b>Abs. Mag:</b>  <input type="number" name="Absolute_Magnitude" >
-		<br>
-		<b>Luminosity:</b>  <input type="number" name="Luminosity" >
-		<br><br>
-		<b>Variable Magnitude:</b>
-		<br>
-		<b>Min:</b>  <input type="number" name="Min_Magnitude" >
-		<br>
-		<b>Max:</b>  <input type="number" name="Max_Magnitude" >
-		<br><br>
-		<b>Star System Name:</b>
-		<br>
-  		<input type="text" name="Star_System_Name" >
-		<br>
-		<b>Companions:</b>
-		<Select name="CompanionID">
-			<option value=""></option>
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-		</select>
-		<br><br>
-		<center>
-		<input type="submit" value="Search">
-		</center>
+		<center><input type="submit" value="Search"></center>
   		</form>
-	</th>
-	<th width=800>
-	<iframe width=100% height=500>
-		<img src= "https://66.media.tumblr.com/fce6d18bf216c35813b3e0d6258a0229/tumblr_ojbecmgIT51qeyvpto1_500.gif"/>
-	<iframe>
-	</th>
- </tr>
+
+</td></tr>
+
+<tr>
+<td></td>
+<td class="names" colspan="1">
+	PRESENTED BY MARTIN GARCIA, ADAM SCHEERER & ANDREW WILKINS
+</td>
+
+</tr>
 
 
 </table>
-<img src="download.gif" alt="Be patient..." />
 
 </body>
 </html>
