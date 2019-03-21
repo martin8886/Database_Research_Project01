@@ -3,32 +3,32 @@
 	<head>
 		<title>Nova</title>
 
-			<style>
-				body {background-color: #5a5175;}
-				table {background-color: #736c89;
-					color:white; width:80%;
-    					margin-left:10%;
-    					margin-right:10%}
-				td {align:left;}
-				p {font-family:myFirstFont;
-				   color:white;
-				   text-align:center;
-				   font-size: 26;}
-				@font-face {font-family: myFirstFont;
-  					src: url(andromeda.ttf);}
-				td.names{font-family:myFirstFont;
-					align:right;
-					background-color: #414189;}				
-				.container {position: relative;
-	  				text-align: center;
-  					color: white;}
-				.top {font-family: myFirstFont;
-					font-size: 75;
-  					position: absolute;
- 					 top: 50px;
-  					left: 150px;
-					}
-			</style>
+		<style>
+			body {background-color: #5a5175;}
+			table {background-color: #736c89;
+				color:white; width:80%;
+						margin-left:10%;
+						margin-right:10%}
+			td {align:left;}
+			p {font-family:myFirstFont;
+				 color:white;
+				 text-align:center;
+				 font-size: 26;}
+			@font-face {font-family: myFirstFont;
+					src: url(andromeda.ttf);}
+			td.names{font-family:myFirstFont;
+				align:right;
+				background-color: #414189;}
+			.container {position: relative;
+					text-align: center;
+					color: white;}
+			.top {font-family: myFirstFont;
+				font-size: 75;
+					position: absolute;
+				 top: 50px;
+					left: 150px;
+				}
+		</style>
 
 	</head>
 
@@ -39,23 +39,22 @@
 		format, the next field (for decimal RA) needs to autopopulate with the converted
 		RA in decimal.  Finally, we'll need a +/- field to give the user a range to search by. -->
 
-<table> 
+<table>
 <tr><td><p><b>Explore the Cosmos</b></p></td>
-	<td rowspan ="10"><div class="container" style="width:100%;"><img src="download.gif" width=100% height=100%><div class="top">Nova DB</div></div> </td>
+	<td rowspan ="13"><div class="container" style="width:100%;"><img src="download.gif" width=100% height=100%><div class="top">Nova DB</div></div> </td>
 </tr>
 
 <tr><td>
 		<form>
 		<br>
   		<b>Hipparcos ID:</b><br>
-  		<input type="number" name="HipparcosID" placeholder="1-10023" min="1" max="10023">
-		
+  		<input type="number" name="HipparcosID" placeholder="1-113832" min="1" max="113832">
+
 </td></tr>
 <tr><td>
-		<br>
   		<b>Constellation:</b>
 		<br>
-		<Select name="Constellation" ">
+		<Select name="Constellation">
 			<option value=""></option>
 			<option value="Andromeda">Andromeda</option>
   		<option value="Antlia">Antlia</option>
@@ -150,7 +149,6 @@
 
 </td></tr>
 <tr><td>
-		<br>
 		<b>Spectral Type:</b>
 		<br>
 			<Select name="SpectralType">
@@ -171,54 +169,80 @@
 <tr><td>
 		<br><b>Distance: </b><br>
 		Between &nbsp;
-		<input type="number" name="CompanionID" size="4" placeholder="min"> And
-		<input type="number" name="CompanionID" size="4" placeholder="max">
+		<input type="number" name="Distance_Lower" size="11" placeholder="min" min= 0>&nbsp;And
+		<input type="number" name="Distance_Upper" size="11" placeholder="max" min= 0>&nbsp;pcs
 		<br>
-</td></tr>
-
-<tr><td>
-	<b>Coordinates:</b> <br>
-	RA: 
-	<input type="number" name="RA_Hours_Minutes_Seconds?" size="4" placeholder="     X    ">
-	&nbsp;
-	<input type="number" name="RA_Decimal" size="4" placeholder="     Y    ">
-	&nbsp;
-	<input type="number" name="RA_PlusMinus" size="4" placeholder="     Z    ">
 
 </td></tr>
 <tr><td>
-	Between
-	<input type="number" name="ValueIncrement" size="4" placeholder="min">&nbsp; And
-	<input type="number" name="PlusMinus" size="4" placeholder="max">
+	<br><b>Coordinates:</b><br>
+	<b>RA:</b> Between &nbsp;
+	<input type="number" name="RA_Lower" size="11" placeholder="min" min= 0 max= 24>&nbsp;And
+	<input type="number" name="RA_Upper" size="11" placeholder="max" min= 0 max= 24>
+
 </td></tr>
 <tr><td>
-	Dec:<br>
+	<b>Dec:</b> Between &nbsp;
+	<input type="number" name="Dec_Lower" size="11" placeholder="min" min= -90 max= 90>&nbsp;And
+	<input type="number" name="Dec_Upper" size="11" placeholder="max" min= -90 max= 90>
+
+</td></tr>
+<tr><td>
+	<br><b>Magnitude:</b><br>
 	Between &nbsp;
-	<input type="number" name="ValueIncrement2" size="4" placeholder="min">&nbsp; And
+ 	<input type="number" name="Magnitude_Lower" size="11" placeholder="min">&nbsp;And
+	<input type="number" name="Magnitude_Upper" size="11" placeholder="max">
 
-	<input type="number" name="PlusMinus2" size="4" placeholder="max">
 </td></tr>
 <tr><td>
-	Magnitude:<br>
+	<b>Absolute Magnitude:</b><br>
 	Between &nbsp;
- 	<input type="number" name="Magnitude" size="4" placeholder="min"> And
-	<input type="number" name="PlusMinus2" size="4" placeholder="max">
+ 	<input type="number" name="Absolute_Magnitude_Lower" size="11" placeholder="min">&nbsp;And
+	<input type="number" name="Absolute_Magnitude_Upper" size="11" placeholder="max">
+
+</td></tr>
+<tr><td>
+	<b>Luminosity:</b><br>
+	Between &nbsp;
+ 	<input type="number" name="Luminosity_Lower" size="11" placeholder="min">&nbsp;And
+	<input type="number" name="Luminosity_Upper" size="11" placeholder="max">&nbsp;Watts
+
+</td></tr>
+<tr><td>
+	<br><b>Variable Magnitude:</b><br>
+	<b>Minimum Magnitude:</b><br>
+	Between &nbsp;
+ 	<input type="number" name="Min_Magnitude_Lower" size="11" placeholder="lower bound">&nbsp;And
+	<input type="number" name="Min_Magnitude_Upper" size="11" placeholder="upper bound">
+
+</td></tr>
+<tr><td>
+	<b>Maximum Magnitude:</b><br>
+	Between &nbsp;
+ 	<input type="number" name="Max_Magnitude_Lower" size="11" placeholder="lower bound">&nbsp;And
+	<input type="number" name="Max_Magnitude_Upper" size="11" placeholder="upper bound">
+
+</td></tr>
+<tr><td>
+	<b>Companions:</b>
+	<br>
+	<Select name="CompanionID">
+		<option value=""></option>
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+	</select>
+	<br>
+
 </td></tr>
 <tr><td>
 		<br>
 		<center><input type="submit" value="Search"></center>
   		</form>
 
-</td></tr>
-
-<tr>
-<td></td>
-<td class="names" colspan="1">
+</td><td class="names" colspan="1">
 	PRESENTED BY MARTIN GARCIA, ADAM SCHEERER & ANDREW WILKINS
-</td>
-
-</tr>
-
+</td></tr>
 
 </table>
 
