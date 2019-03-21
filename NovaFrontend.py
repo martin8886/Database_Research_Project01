@@ -1,6 +1,5 @@
 from flask import Flask
-import mysql.connector
-from mysql.connector import errorcode
+import pandas as pd
 from flask import jsonify
 from flask import Flask, render_template, request, redirect
 import logging
@@ -8,15 +7,15 @@ import NovaBackend
 
 # To Do list:
 # 1) Design webpage appearance
-#    Base it on the Layout Ideas.pptx
-#    Install and learn visualization librarys as appropriate
-# 2) Read in search criteria from webpage
-# 3) Construct an SQL string that meets the search criteria
-# 4) Query NovaDB with the constructed string
+#    Base it on the Layout Ideas.pptx                           -- DONE
+#    Install and learn visualization librarys as appropriate    -- DONE
+# 2) Read in search criteria from webpage                       -- DONE
+# 3) Construct an SQL string that meets the search criteria     -- DONE
+# 4) Query NovaDB with the constructed string                   -- DONE
 # 5) Post the query results to the appropriate page on the website
-#    Single star: Star Summary Page
-#    2 stars: Comparison Page
-#    More than 2 stars: Star Map Page
+#    Single star: Star Summary Page                             -- in progress
+#    2 stars: Comparison Page                                   -- in progress
+#    More than 2 stars: Star Map Page                           -- in progress
 
 app= Flask(__name__)    # Required to run the website
 
@@ -26,6 +25,7 @@ def index():
 
 @app.route('/User_Query', methods=['POST'])
 def User_Query():
+    # Read in the information entered into the web page
     # Check if HipparcosID is null
     try:
         # Check if they're entering a number less than or equal to 0.
@@ -38,6 +38,7 @@ def User_Query():
     if Constellation == "":
         Constellation = None    # it was blank to begin with
     else:
+        # Otherwise, we need the 3 character ID instead of the fully spelled out name.  Hence...
         if Constellation == "Andromeda": Constellation = "And"
         elif Constellation == "Antlia": Constellation = "Ant"
         elif Constellation == "Apus": Constellation = "Aps"
@@ -130,78 +131,192 @@ def User_Query():
     # Check if SpectralType is null
     SpectralType = request.form['SpectralType']
     if SpectralType == "": SpectralType = None      # it was blank to begin with
-    # Check all 3 fields of RA (for now I'm only going to do 1 since it's all we have)
+
+    # Distance
+    # Check if Distance_Lower is null
     try:
-        RA_Hours = int(request.form['RA_Hours_Minutes_Seconds'])
-        # Make sure RA_Hours is between 0-24
-        if (RA_Hours < 0) or (RA_Hours > 24): return redirect("localhost:5000/index.html")
-    except:
-        RA_Hours = None     # it was blank to begin with
-    # Check if Declination is null
-    try:
-        Dec = float(request.form['Dec'])
-        # Then check if declination is between -90 and 90
-        if (Dec > 90) or (Dec < -90): return redirect("localhost:5000/index.html")
-    except:
-        Dec = None          # it was blank to begin with
-    # Check if Distance is null
-    try:
-        Distance = float(request.form['Distance'])
+        Distance_Lower = float(request.form['Distance_Lower'])
         # Make sure it's a positive distance
-        if Distance < 0: return redirect("localhost:5000/index.html")
+        if Distance_Lower < 0: return redirect("localhost:5000/index.html")
     except:
-        Distance = None     # it was blank to begin with
-    # Check if Magnitude is null
-    Magnitude = request.form['Magnitude']
-    if Magnitude == "":     # it was blank to begin with
-        Magnitude = None
+        Distance_Lower = None     # it was blank to begin with
+    # Check if Distance_Upper is null
+    try:
+        Distance_Upper = float(request.form['Distance_Upper'])
+        # Make sure it's a positive distance
+        if Distance_Upper < 0: return redirect("localhost:5000/index.html")
+    except:
+        Distance_Upper = None     # it was blank to begin with
+    # Check that Distance_Upper is greater than Distance_Lower
+    if (Distance_Lower != None) and (Distance_Upper != None):
+        if Distance_Lower > Distance_Upper: return redirect("localhost:5000/index.html")
+
+    # Coordinates (RA)
+    # Check if RA_Lower is null
+    try:
+        RA_Lower = int(request.form['RA_Lower'])
+        # Make sure RA_Lower is between 0-24
+        if (RA_Lower < 0) or (RA_Lower > 24): return redirect("localhost:5000/index.html")
+    except:
+        RA_Lower = None     # it was blank to begin with
+    # Check if RA_Upper is null
+    try:
+        RA_Upper = int(request.form['RA_Upper'])
+        # Make sure RA_Upper is between 0-24
+        if (RA_Upper < 0) or (RA_Upper > 24): return redirect("localhost:5000/index.html")
+    except:
+        RA_Upper = None     # it was blank to begin with
+    # Check that RA_Upper is greater than RA_Lower
+    if (RA_Lower != None) and (RA_Upper != None):
+        if RA_Lower > RA_Upper: return redirect("localhost:5000/index.html")
+
+    #Coordinates (Dec)
+    # Check if Dec_Lower is null
+    try:
+        Dec_Lower = float(request.form['Dec_Lower'])
+        # Then check if declination is between -90 and 90
+        if (Dec_Lower > 90) or (Dec_Lower < -90): return redirect("localhost:5000/index.html")
+    except:
+        Dec_Lower = None          # it was blank to begin with
+    # Check if Dec_Upper is null
+    try:
+        Dec_Upper = float(request.form['Dec_Upper'])
+        # Then check if declination is between -90 and 90
+        if (Dec_Upper > 90) or (Dec_Upper < -90): return redirect("localhost:5000/index.html")
+    except:
+        Dec_Upper = None          # it was blank to begin with
+    # Check that Dec_Upper is greater than Dec_Lower
+    if (Dec_Lower != None) and (Dec_Upper != None):
+        if Dec_Lower > Dec_Upper: return redirect("localhost:5000/index.html")
+
+    # Magnitude
+    # Check if Magnitude_Lower is null
+    Magnitude_Lower = request.form['Magnitude_Lower']
+    if Magnitude_Lower == "":     # it was blank to begin with
+        Magnitude_Lower = None
     else:
-        Magnitude = float(Magnitude)
-    # Check if Absolute_Magnitude is null
-    Absolute_Magnitude = request.form['Absolute_Magnitude']
-    if Absolute_Magnitude == "":    # it was blank to begin with
-        Absolute_Magnitude = None
+        Magnitude_Lower = float(Magnitude_Lower)
+    # Check if Magnitude_Upper is null
+    Magnitude_Upper = request.form['Magnitude_Upper']
+    if Magnitude_Upper == "":     # it was blank to begin with
+        Magnitude_Upper = None
     else:
-        # Turn the string into a float
-        Absolute_Magnitude = float(Absolute_Magnitude)
-    # Check if Luminosity is null
-    Luminosity = request.form['Luminosity']
-    if Luminosity == "":    # it was blank to begin with
-        Luminosity = None
+        Magnitude_Upper = float(Magnitude_Upper)
+    # Check that Magnitude_Upper is greater than Magnitude_Lower
+    if (Magnitude_Lower != None) and (Magnitude_Upper != None):
+        if Magnitude_Lower > Magnitude_Upper: return redirect("localhost:5000/index.html")
+
+    # Absolute Magnitude
+    # Check if Absolute_Magnitude_Lower is null
+    Absolute_Magnitude_Lower = request.form['Absolute_Magnitude_Lower']
+    if Absolute_Magnitude_Lower == "":     # it was blank to begin with
+        Absolute_Magnitude_Lower = None
     else:
-        # Turn the string into a float and make sure it's positive
-        Luminosity = float(Luminosity)
-        if Luminosity < 0: return redirct("localhost:5000/index.html")
-    # Check if Min_Magnitude is null
-    Min_Magnitude = request.form['Min_Magnitude']
-    if Min_Magnitude == "":    # it was blank to begin with
-        Min_Magnitude = None
+        Absolute_Magnitude_Lower = float(Absolute_Magnitude_Lower)
+    # Check if Absolute_Magnitude_Upper is null
+    Absolute_Magnitude_Upper = request.form['Absolute_Magnitude_Upper']
+    if Absolute_Magnitude_Upper == "":     # it was blank to begin with
+        Absolute_Magnitude_Upper = None
     else:
-        # Turn the string into a float
-        Min_Magnitude = float(Min_Magnitude)
-    # Check if Max_Magnitude is null
-    Max_Magnitude = request.form['Max_Magnitude']
-    if Max_Magnitude == "":
-        Max_Magnitude = None
+        Absolute_Magnitude_Upper = float(Absolute_Magnitude_Upper)
+    # Check that Absolute_Magnitude_Upper is greater than Absolute_Magnitude_Lower
+    if (Absolute_Magnitude_Lower != None) and (Absolute_Magnitude_Upper != None):
+        if Absolute_Magnitude_Lower > Absolute_Magnitude_Upper: return redirect("localhost:5000/index.html")
+
+    # Luminosity
+    # Check if Luminosity_Lower is null
+    Luminosity_Lower = request.form['Luminosity_Lower']
+    if Luminosity_Lower == "":     # it was blank to begin with
+        Luminosity_Lower = None
     else:
-        # Turn the string into a float
-        Max_Magnitude = float(Max_Magnitude)
-    # Check if Star_System_Name is null
-    Star_System_Name = request.form['Star_System_Name']
-    if Star_System_Name == "": Star_System_Name = None      # it was blank to begin with
+        Luminosity_Lower = float(Luminosity_Lower)
+    # Check if Luminosity_Upper is null
+    Luminosity_Upper = request.form['Luminosity_Upper']
+    if Luminosity_Upper == "":     # it was blank to begin with
+        Luminosity_Upper = None
+    else:
+        Luminosity_Upper = float(Luminosity_Upper)
+    # Check that Luminosity_Upper is greater than Luminosity_Lower
+    if (Luminosity_Lower != None) and (Luminosity_Upper != None):
+        if Luminosity_Lower > Luminosity_Upper: return redirect("localhost:5000/index.html")
+
+    # Minimum Variable Magnitude
+    # Check if Min_Magnitude_Lower is null
+    Min_Magnitude_Lower = request.form['Min_Magnitude_Lower']
+    if Min_Magnitude_Lower == "":     # it was blank to begin with
+        Min_Magnitude_Lower = None
+    else:
+        Min_Magnitude_Lower = float(Min_Magnitude_Lower)
+    # Check if Min_Magnitude_Upper is null
+    Min_Magnitude_Upper = request.form['Min_Magnitude_Upper']
+    if Min_Magnitude_Upper == "":     # it was blank to begin with
+        Min_Magnitude_Upper = None
+    else:
+        Min_Magnitude_Upper = float(Min_Magnitude_Upper)
+    # Check that Min_Magnitude_Upper is greater than Min_Magnitude_Lower
+    if (Min_Magnitude_Lower != None) and (Min_Magnitude_Upper != None):
+        if Min_Magnitude_Lower > Min_Magnitude_Upper: return redirect("localhost:5000/index.html")
+
+    # Maximum Variable Magnitude
+    # Check if Max_Magnitude_Lower is null
+    Max_Magnitude_Lower = request.form['Max_Magnitude_Lower']
+    if Max_Magnitude_Lower == "":     # it was blank to begin with
+        Max_Magnitude_Lower = None
+    else:
+        Max_Magnitude_Lower = float(Max_Magnitude_Lower)
+    # Check if Max_Magnitude_Upper is null
+    Max_Magnitude_Upper = request.form['Max_Magnitude_Upper']
+    if Max_Magnitude_Upper == "":     # it was blank to begin with
+        Max_Magnitude_Upper = None
+    else:
+        Max_Magnitude_Upper = float(Max_Magnitude_Upper)
+    # Check that Max_Magnitude_Upper is greater than Max_Magnitude_Lower
+    if (Max_Magnitude_Lower != None) and (Max_Magnitude_Upper != None):
+        if Max_Magnitude_Lower > Max_Magnitude_Upper: return redirect("localhost:5000/index.html")
+
     # Check if CompanionID is null
     try:
         CompanionID = int(request.form['CompanionID'])
     except:
         CompanionID = None  # it was blank to begin with
-    results = {"HipparcosID": HipparcosID, "Constellation": Constellation, "Spectral Type": SpectralType,
-               "RA Hours": RA_Hours, "Dec": Dec, "Distance": Distance, "Magnitude": Magnitude,
-               "Absolute Magnitude": Absolute_Magnitude, "Luminosity": Luminosity, "Min Magnitude": Min_Magnitude,
-               "Max Magnitude": Max_Magnitude, "Star System Name": Star_System_Name, "Companions": CompanionID}
-    query= NovaBackend.ParseQuery(results)
+
+    # Put everything together into a dictionary that represents everything the user input.
+    criteria = {"HipparcosID": HipparcosID,
+                "Constellation": Constellation,
+                "Spectral Type": SpectralType,
+                "Distance Lower": Distance_Lower, "Distance Upper": Distance_Upper,
+                "RA Lower": RA_Lower, "RA Upper": RA_Upper,
+                "Dec Lower": Dec_Lower, "Dec Upper": Dec_Upper,
+                "Magnitude Lower": Magnitude_Lower, "Magnitude Upper": Magnitude_Upper,
+                "Absolute Magnitude Lower": Absolute_Magnitude_Lower, "Absolute Magnitude Upper": Absolute_Magnitude_Upper,
+                "Luminosity Lower": Luminosity_Lower, "Luminosity Upper": Luminosity_Upper,
+                "Min Magnitude Lower": Min_Magnitude_Lower, "Min Magnitude Upper": Min_Magnitude_Upper,
+                "Max Magnitude Lower": Max_Magnitude_Lower, "Max Magnitude Upper": Max_Magnitude_Upper,
+                "Companions": CompanionID}
+
+    # Query the database using the information from the dictionary
+    query= NovaBackend.ParseQuery(criteria)
+    # It's important to limit the distance because when distance = 100000 it throws the entire scale off
+    query += ("AND Distance <= 50000; ")
     print(query)
-    NovaBackend.MultiStarPlot(query)
-    return(jsonify(results))
+    # Query the database
+    results= NovaBackend.NovaQuery(query)
+    # Direct the results to the appropriate webpage based on the number of stars returned.
+    if len(results["HipparcosID"]) == 0:
+        print("No search results")
+        return redirect("localhost:5000/index.html")    # There were no search results
+    elif len(results["HipparcosID"]) == 1:
+        print("Only 1 search result")
+        return redirect("localhost:5000/single_star.html")  # Go to the single star results page
+    elif len(results["HipparcosID"]) == 2:
+        print("Multiple search results")
+        return redirect("localhost:5000/comparison.html")  # Go to the comparison results page
+    else:
+        # Generate a 3D scatterplot of the results and display it on the multistar results page
+        NovaBackend.MultiStarPlot(results)
+        #return redirect("localhost:5000/multistar.html")
+
+    return redirect("localhost:5000/index.html")
 
 ## Starts the server for serving Rest Services
 if __name__ == '__main__':

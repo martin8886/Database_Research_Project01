@@ -4,107 +4,117 @@ import matplotlib.pyplot as plt          # We'll generate the plot with matplotl
 import numpy as np                       # Standard math and array library
 import pandas as pd                      # Standard dataframe library
 
-def ParseQuery(results):
+def ParseQuery(criteria):
     '''This function will analyze which fields have been entered and then construct a string to be used
     in a MySQL query to generate search results.'''
     # First determine if we're querying 1 star, many stars, or a constellation.
-    if results["HipparcosID"] != None:
+    if criteria["HipparcosID"] != None:
         # This means the user has entered a specific HipparcosID.  We'll want to query that specific star
-        query = ("SELECT * FROM Star WHERE `HipparcosID` = %s; " %results["HipparcosID"])
+        query = ("SELECT * FROM Star WHERE `HipparcosID` = {}; ".format(criteria["HipparcosID"]))
     # otherwise it's probably a multistar search
     else:
         # in which case, we'll probably want to piece together the query
         query_WHERE = None
         # Starting with Constellation,
-        if results["Constellation"] != None:
-            query_WHERE = "WHERE `ConstellationID` = '%s' " %results["Constellation"]
-        if results["Spectral Type"] != None:
+        if criteria["Constellation"] != None:
+            query_WHERE = "WHERE `ConstellationID` = '{}' ".format(criteria["Constellation"])
+        # Spectral Type
+        if criteria["Spectral Type"] != None:
             # Check if there's an existing WHERE clause
             if query_WHERE == None:
-                query_WHERE = "WHERE LEFT(`SpectralType`, 1) = '%s' " %results["Spectral Type"]
+                query_WHERE = "WHERE LEFT(`SpectralType`, 1) = '{}' ".format(criteria["Spectral Type"])
             else:
                 # If so, append to it with the AND statement
-                query_WHERE += " AND LEFT(`SpectralType`, 1) = '%s' " %results["Spectral Type"]
-        # Remember, we need ALL 3 fields or the decimal RA to be present here to work
-        if results["RA Hours"] != None:
+                query_WHERE += "AND LEFT(`SpectralType`, 1) = '{}' ".format(criteria["Spectral Type"])
+        # Distance
+        if criteria["Distance Lower"] != None:      # This works because Lower and Upper have to be present to work
             # Check if there's an existing WHERE clause
             if query_WHERE == None:
-                query_WHERE = "WHERE `RA` = %s " % str(results["RA Hours"])
+                query_WHERE = "WHERE `Distance` >= {} AND `Distance` <= {} ".format(str(criteria["Distance Lower"]), str(criteria["Distance Upper"]))
             else:
                 # If so, append to it with the AND statement
-                query_WHERE += " AND `RA` = %s " % str(results["RA Hours"])
-        if results["Dec"] != None:
+                query_WHERE += "AND `Distance` >= {} AND `Distance` <= {} ".format(str(criteria["Distance Lower"]), str(criteria["Distance Upper"]))
+        # RA
+        if criteria["RA Lower"] != None:     # This works because RA Lower and RA Upper have to be present to work
             # Check if there's an existing WHERE clause
             if query_WHERE == None:
-                query_WHERE = "WHERE `Dec` = %s " % str(results["Dec"])
+                query_WHERE = "WHERE `RA` >= '{}' AND `RA` <= '{}' ".format(str(criteria["RA Lower"]), str(criteria["RA Upper"]))
             else:
                 # If so, append to it with the AND statement
-                query_WHERE += " AND `Dec` = %s " % str(results["Dec"])
-        # When checking distance, we'll need to adjust this to accept a range of distances.  That is,
-        # from distance1 to distance2.
-        if results["Distance"] != None:
+                query_WHERE += "AND `RA` >= '{}' AND `RA` <= '{}' ".format(str(criteria["RA Lower"]), str(criteria["RA Upper"]))
+        # Dec
+        if criteria["Dec Lower"] != None:     # This works because Dec Lower and Dec Upper have to be present to work
             # Check if there's an existing WHERE clause
             if query_WHERE == None:
-                query_WHERE = "WHERE `Distance` = %s " % str(results["Distance"])
+                query_WHERE = "WHERE `Dec` >= '{}' AND `Dec` <= '{}' ".format(str(criteria["Dec Lower"]), str(criteria["Dec Upper"]))
             else:
                 # If so, append to it with the AND statement
-                query_WHERE += " AND `Distance` = %s " % str(results["Distance"])
-        # Likewise with Magnitude, Absolute Magnitude, and Luminosity.  Ranges are approprite
-        if results["Magnitude"] != None:
+                query_WHERE += "AND `Dec` >= '{}' AND `Dec` <= '{}' ".format(str(criteria["Dec Lower"]), str(criteria["Dec Upper"]))
+        # Magnitude
+        if criteria["Magnitude Lower"] != None:     # This works because Lower and Upper have to be present to work
             # Check if there's an existing WHERE clause
             if query_WHERE == None:
-                query_WHERE = "WHERE `Magnitude` = %s " % str(results["Magnitude"])
+                query_WHERE = "WHERE `Magnitude` >= '{}' AND `Magnitude` <= '{}' ".format(str(criteria["Magnitude Lower"]), str(criteria["Magnitude Upper"]))
             else:
                 # If so, append to it with the AND statement
-                query_WHERE += " AND `Magnitude` = %s " % str(results["Magnitude"])
-        if results["Absolute Magnitude"] != None:
+                query_WHERE += "AND `Magnitude` >= '{}' AND `Magnitude` <= '{}' ".format(str(criteria["Magnitude Lower"]), str(criteria["Magnitude Upper"]))
+        # Absolute Magnitude
+        if criteria["Absolute Magnitude Lower"] != None:     # This works because Lower and Upper have to be present to work
             # Check if there's an existing WHERE clause
             if query_WHERE == None:
-                query_WHERE = "WHERE `AbsoluteMagnitude` = %s " % str(results["Absolute Magnitude"])
+                query_WHERE = "WHERE `AbsoluteMagnitude` >= '{}' AND `AbsoluteMagnitude` <= '{}' ".format(str(criteria["Absolute Magnitude Lower"]), str(criteria["Absolute Magnitude Upper"]))
             else:
                 # If so, append to it with the AND statement
-                query_WHERE += " AND `AbsoluteMagnitude` = %s " % str(results["Absolute Magnitude"])
-        if results["Luminosity"] != None:
+                query_WHERE += "AND `AbsoluteMagnitude` >= '{}' AND `AbsoluteMagnitude` <= '{}' ".format(str(criteria["Absolute Magnitude Lower"]), str(criteria["Absolute Magnitude Upper"]))
+        # Luminosity
+        if criteria["Luminosity Lower"] != None:     # This works because Lower and Upper have to be present to work
             # Check if there's an existing WHERE clause
             if query_WHERE == None:
-                query_WHERE = "WHERE `Luminosity` = %s " % str(results["Luminosity"])
+                query_WHERE = "WHERE `Luminosity` >= '{}' AND `Luminosity` <= '{}' ".format(str(criteria["Luminosity Lower"]), str(criteria["Luminosity Upper"]))
             else:
                 # If so, append to it with the AND statement
-                query_WHERE += " AND `Luminosity` = %s " % str(results["Luminosity"])
-        if results["Min Magnitude"] != None:
+                query_WHERE += "AND `Luminosity` >= '{}' AND `Luminosity` <= '{}' ".format(str(criteria["Luminosity Lower"]), str(criteria["Luminosity Upper"]))
+        # Minimum Variable Magnitude
+        if criteria["Min Magnitude Lower"] != None:     # This works because Lower and Upper have to be present to work
             # Check if there's an existing WHERE clause
             if query_WHERE == None:
-                query_WHERE = "WHERE `VariableMinMagnitude` = %s " % str(results["Min Magnitude"])
+                query_WHERE = "WHERE `VariableMinMagnitude` >= '{}' AND `VariableMinMagnitude` <= '{}' ".format(str(criteria["Min Magnitude Lower"]), str(criteria["Min Magnitude Upper"]))
             else:
                 # If so, append to it with the AND statement
-                query_WHERE += " AND `VariableMinMagnitude` = %s " % str(results["Min Magnitude"])
-        if results["Max Magnitude"] != None:
+                query_WHERE += "AND `VariableMinMagnitude` >= '{}' AND `VariableMinMagnitude` <= '{}' ".format(str(criteria["Min Magnitude Lower"]), str(criteria["Min Magnitude Upper"]))
+        # Maximum Variable Magnitude
+        if criteria["Max Magnitude Lower"] != None:     # This works because Lower and Upper have to be present to work
             # Check if there's an existing WHERE clause
             if query_WHERE == None:
-                query_WHERE = "WHERE `VariableMaxMagnitude` = %s " % str(results["Max Magnitude"])
+                query_WHERE = "WHERE `VariableMaxMagnitude` >= '{}' AND `VariableMaxMagnitude` <= '{}' ".format(str(criteria["Max Magnitude Lower"]), str(criteria["Max Magnitude Upper"]))
             else:
                 # If so, append to it with the AND statement
-                query_WHERE += " AND `VariableMaxMagnitude` = %s " % str(results["Max Magnitude"])
-        # Star System Name will probably require some prior knowledge since these are not intuitive.
-        # Maybe we could somehow incororate a mechanism that checks if the spelling is 'close enough'
-        if results["Star System Name"] != None:
+                query_WHERE += "AND `VariableMaxMagnitude` >= '{}' AND `VariableMaxMagnitude` <= '{}' ".format(str(criteria["Max Magnitude Lower"]), str(criteria["Max Magnitude Upper"]))
+        # Companions
+        if criteria["Companions"] != None:
             # Check if there's an existing WHERE clause
             if query_WHERE == None:
-                query_WHERE = "WHERE `BaseName` = '%s' " % str(results["Star System Name"])
+                query_WHERE = "WHERE `CompanionID` = {} ".format(str(criteria["Companions"]))
             else:
                 # If so, append to it with the AND statement
-                query_WHERE += " AND `BaseName` = '%s' " % str(results["Star System Name"])
-        # Last one is either 1, 2, or 3 if not null.
-        if results["Companions"] != None:
-            # Check if there's an existing WHERE clause
-            if query_WHERE == None:
-                query_WHERE = "WHERE `CompanionID` = %s " % str(results["Companions"])
-            else:
-                # If so, append to it with the AND statement
-                query_WHERE += " AND `CompanionID` = %s " % str(results["Companions"])
+                query_WHERE += " AND `CompanionID` = {} ".format(str(criteria["Companions"]))
         query = ("SELECT * FROM Star " + query_WHERE)
     return(query)
 
+# Fetch the results of the query and store it in a pandas dataframe.
+def NovaQuery(query):
+    conn = mysql.connector.connect(user='root', password='Drew$kiWi1kins09!', host='127.0.0.1', database='NovaDB')
+    cursor = conn.cursor()
+    cursor.execute(query)
+    results = pd.DataFrame(cursor.fetchall(), columns= ["HipparcosID", "HenryDraperID", "HarvardRevisedID", "GlieseID",
+        "BayerFlamsteed", "ProperName", "RA", "Dec", "Distance", "Magnitude", "AbsoluteMagnitude", "SpectralType",
+        "ColorIndex", "X", "Y", "Z", "RA(radians)", "Dec(radians)", "ConstellationID", "Luminosity", "CompanionID",
+        "PrimaryCompanionID", "BaseName", "VariableStarID", "VariableMinMagnitude", "VariableMaxMagnitude"])
+    cursor.close()
+    conn.close()
+    return(results)
+
+# Get the attribtes of each star in the results based on spectral type for the 3D plot
 def StarType(spectraltype):
     # Define a few empty lists (or arrays)
     startype = list(spectraltype)   # This holds the letter of the spectral type: O B A F G K M C or U for Unknown
@@ -148,21 +158,10 @@ def StarType(spectraltype):
             starcolor[i] = "gold"
     return(startype, starsize, starcolor)
 
-def MultiStarPlot(query):
-    conn = mysql.connector.connect(user='root', password='Drew$kiWi1kins09!', host='127.0.0.1', database='NovaDB')
-    cursor = conn.cursor()
-
-    # It's important to limit the distance because when distance = 100000 it throws the entire scale off
-    query += (" AND Distance <= 50000; ")
-    cursor.execute(query)
-    result = pd.DataFrame(cursor.fetchall(), columns= ["HipparcosID", "HenryDraperID", "HarvardRevisedID", "GlieseID",
-        "BayerFlamsteed", "ProperName", "RA", "Dec", "Distance", "Magnitude", "AbsoluteMagnitude", "SpectralType",
-        "ColorIndex", "X", "Y", "Z", "RA(radians)", "Dec(radians)", "ConstellationID", "Luminosity", "CompanionID",
-        "PrimaryCompanionID", "BaseName", "VariableStarID", "VariableMinMagnitude", "VariableMaxMagnitude"])
-    cursor.close()
-    conn.close()
+# Generate a 3D scatterplot of the results
+def MultiStarPlot(results):
     # Get the attributes for each star on the 3D plot
-    startype, starsize, starcolor = StarType(result["SpectralType"])
+    startype, starsize, starcolor = StarType(results["SpectralType"])
 
     # Code up the plot
     from mpl_toolkits.mplot3d import Axes3D
@@ -170,9 +169,9 @@ def MultiStarPlot(query):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     # Read the data from the query as a list
-    xs = list(pd.to_numeric(result["X"]))
-    ys = list(pd.to_numeric(result["Y"]))
-    zs = list(pd.to_numeric(result["Z"]))
+    xs = list(pd.to_numeric(results["X"]))
+    ys = list(pd.to_numeric(results["Y"]))
+    zs = list(pd.to_numeric(results["Z"]))
     # Draw the scatterplot using the colors and sizes we determined above
     ax.scatter(xs, ys, zs, c= starcolor, s= starsize, depthshade= False)
     # The axis wont be centered initially, so let's fix that.  Start by getting the max value on each dimension
