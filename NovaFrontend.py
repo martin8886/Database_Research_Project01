@@ -17,7 +17,7 @@ import NovaBackend
 #    2 stars: Comparison Page                                   -- in progress
 #    More than 2 stars: Star Map Page                           -- in progress
 
-app= Flask(__name__, , static_url_path = "", static_folder = "templates")    # Required to run the website, file path for images added
+app= Flask(__name__,  static_url_path = "", static_folder = "templates")    # Required to run the website, file path for images added
 
 @app.route("/") # As soon as the website is loaded, it will direct to the index.html page.
 def index():
