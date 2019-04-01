@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Nova - Single Star </title>
+		<style>
+			body {background-color: #5a5175;}
+			table {background-color: #736c89;
+				color:white; width:150;
+				margin-left:10%;
+				margin-right:10%}
+			@font-face {font-family: myFirstFont;
+				src: url(andromeda.ttf);}
+			.container {position: relative;
+				text-align: center;
+				color: white;
+				font-family: myFirstFont;
+				background-color: #414189;
+				font-size: 50;}
+			a:link, a:visited {
+  				background-color: #414189;
+  				color: white;
+  				padding: 15px 25px;
+  				text-align: center;
+  				text-decoration: none;
+ 				 display: inline-block;
+				}
+
+			a:hover, a:active {
+  				background-color:red;
+				}
+
+		</style>
+	</head>
+
+   <body>
+
+
+<table>
+<tr>
+<td><div class="container"><b>Nova DB: Star</b></div></td>
+</tr>
+<tr>
+<td>
+{{ result.to_html() | safe}}
+<td>
+</tr>
+<tr>
+<td><center><a href="index.html">New Search</a></center></td>
+</tr>
+<table>
+   </body>
+</html>
