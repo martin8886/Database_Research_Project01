@@ -23,7 +23,7 @@ app= Flask(__name__,  static_url_path = "", static_folder = "templates")    # Re
 def index():
     return render_template("index.html")
 
-@app.route('/User_Query', methods=['POST'])
+@app.route('/', methods=['POST'])
 def User_Query():
     # Read in the information entered into the web page
     # Check if HipparcosID is null
@@ -301,13 +301,16 @@ def User_Query():
     print(query)
     # Query the database
     results= NovaBackend.NovaQuery(query)
+    #Transpose dataframe to be passed out to our single star and multiple star search
+    resultdf=results
+    resultdf = resultdf.T
     # Direct the results to the appropriate webpage based on the number of stars returned.
     if len(results["HipparcosID"]) == 0:
         print("No search results")
         return redirect("localhost:5000/index.html")    # There were no search results
     elif len(results["HipparcosID"]) == 1:
         print("Only 1 search result")
-        return redirect("localhost:5000/single_star.html")  # Go to the single star results page
+        return render_template('SINGLE_STAR.HTML', result=resultdf)   # Go to the single star results page
     elif len(results["HipparcosID"]) == 2:
         print("Multiple search results")
         return redirect("localhost:5000/comparison.html")  # Go to the comparison results page
