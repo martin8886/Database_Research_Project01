@@ -310,7 +310,7 @@ def User_Query():
         return redirect("localhost:5000/index.html")    # There were no search results
     elif len(results["HipparcosID"]) == 1:
         print("Only 1 search result")
-        return render_template('SINGLE_STAR.HTML', result=resultdf)   # Go to the single star results page
+        return render_template('SINGLE_STAR.HTML', result=resultdf)   # Go to the single star results page, passing transposed df into variable result to be used in the referenced webpage
     elif len(results["HipparcosID"]) == 2:
         print("Multiple search results")
         return redirect("localhost:5000/comparison.html")  # Go to the comparison results page
