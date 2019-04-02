@@ -42,17 +42,17 @@
 <table>
 <tr bgcolor = #333399>
  
-<td>Star 1 </td>
-<td>Comparison</td>
+<td><center>Star 1</center> </td>
+<td><center>Comparison</center></td>
  
-<td>Star 2 </td>
+<td><center>Star 2</center> </td>
 </tr>
   
 
 <tr>
 <td><div class="container" style="width:100%;"><img src= "{{pic}}" width=100% height=100%><div class="top">{{result.ProperName[0]}}</div></div></td>
  
-<td rowspan=1 bgcolor = #333399>          
+<td rowspan=1 bgcolor = #414189>          
 </td>
 
 <td><div class="container" style="width:100%;"><img src= "{{pic}}" width=100% height=100%><div class="top">{{result.ProperName[1]}}</div></div></td>
@@ -61,7 +61,7 @@
 
 <tr>
 <td>
-	<center>
+<center>
 <b>HipparcosID:</b>		{{result.HipparcosID[0] | safe}}  <br>
 <b>Constellation:</b>		{{result.ConstellationID[0] | safe}} <br>
 <b>Spectral Type:</b>		{{result.SpectralType[0] | safe}} <br>
@@ -77,11 +77,10 @@
 		<br><b>Maximum Magnitude:</b>		 {{result.VariableMaxMagnitude[0] | safe}} <br>
 <b>Companion Stars:</b>		{{result.CompanionID[0] | safe}} <br>
 <b>Star System Name:</b>		{{result.BaseName[0] | safe}} <br>
-	</center>
+</center>
 </td>
 <td></td>
-<td>
-	<center>
+<td><center>
 <b>HipparcosID:</b>		{{result.HipparcosID[1] | safe}}  <br>
 <b>Constellation:</b>		{{result.ConstellationID[1] | safe}} <br>
 <b>Spectral Type:</b>		{{result.SpectralType[1] | safe}} <br>
@@ -97,7 +96,7 @@
 		<br><b>Maximum Magnitude:</b>		 {{result.VariableMaxMagnitude[1] | safe}} <br>
 <b>Companion Stars:</b>		{{result.CompanionID[1] | safe}} <br>
 <b>Star System Name:</b>		{{result.BaseName[1] | safe}} <br>
-	</center>
+</center>
 
 </td>
 </tr>
