@@ -30,7 +30,7 @@ def User_Query():
     try:
         # Check if they're entering a number less than or equal to 0.
         HipparcosID = int(request.form['HipparcosID'])
-        if (HipparcosID < 1) or (HipparcosID > 113474): return redirect("localhost:5000/index.html")
+        if (HipparcosID < 1) or (HipparcosID > 113474): return redirect("/")
     except:
         HipparcosID = None  # it was blank to begin with
     # Check if Constellation is null
@@ -137,57 +137,57 @@ def User_Query():
     try:
         Distance_Lower = float(request.form['Distance_Lower'])
         # Make sure it's a positive distance
-        if Distance_Lower < 0: return redirect("localhost:5000/index.html")
+        if Distance_Lower < 0: return redirect("index.html")
     except:
         Distance_Lower = None     # it was blank to begin with
     # Check if Distance_Upper is null
     try:
         Distance_Upper = float(request.form['Distance_Upper'])
         # Make sure it's a positive distance
-        if Distance_Upper < 0: return redirect("localhost:5000/index.html")
+        if Distance_Upper < 0: return redirect("index.html")
     except:
         Distance_Upper = None     # it was blank to begin with
     # Check that Distance_Upper is greater than Distance_Lower
     if (Distance_Lower != None) and (Distance_Upper != None):
-        if Distance_Lower > Distance_Upper: return redirect("localhost:5000/index.html")
+        if Distance_Lower > Distance_Upper: return redirect("/")
 
     # Coordinates (RA)
     # Check if RA_Lower is null
     try:
         RA_Lower = int(request.form['RA_Lower'])
         # Make sure RA_Lower is between 0-24
-        if (RA_Lower < 0) or (RA_Lower > 24): return redirect("localhost:5000/index.html")
+        if (RA_Lower < 0) or (RA_Lower > 24): return redirect("/")
     except:
         RA_Lower = None     # it was blank to begin with
     # Check if RA_Upper is null
     try:
         RA_Upper = int(request.form['RA_Upper'])
         # Make sure RA_Upper is between 0-24
-        if (RA_Upper < 0) or (RA_Upper > 24): return redirect("localhost:5000/index.html")
+        if (RA_Upper < 0) or (RA_Upper > 24): return redirect("/")
     except:
         RA_Upper = None     # it was blank to begin with
     # Check that RA_Upper is greater than RA_Lower
     if (RA_Lower != None) and (RA_Upper != None):
-        if RA_Lower > RA_Upper: return redirect("localhost:5000/index.html")
+        if RA_Lower > RA_Upper: return redirect("/")
 
     #Coordinates (Dec)
     # Check if Dec_Lower is null
     try:
         Dec_Lower = float(request.form['Dec_Lower'])
         # Then check if declination is between -90 and 90
-        if (Dec_Lower > 90) or (Dec_Lower < -90): return redirect("localhost:5000/index.html")
+        if (Dec_Lower > 90) or (Dec_Lower < -90): return redirect("/l")
     except:
         Dec_Lower = None          # it was blank to begin with
     # Check if Dec_Upper is null
     try:
         Dec_Upper = float(request.form['Dec_Upper'])
         # Then check if declination is between -90 and 90
-        if (Dec_Upper > 90) or (Dec_Upper < -90): return redirect("localhost:5000/index.html")
+        if (Dec_Upper > 90) or (Dec_Upper < -90): return redirect("/")
     except:
         Dec_Upper = None          # it was blank to begin with
     # Check that Dec_Upper is greater than Dec_Lower
     if (Dec_Lower != None) and (Dec_Upper != None):
-        if Dec_Lower > Dec_Upper: return redirect("localhost:5000/index.html")
+        if Dec_Lower > Dec_Upper: return redirect("/")
 
     # Magnitude
     # Check if Magnitude_Lower is null
@@ -204,7 +204,7 @@ def User_Query():
         Magnitude_Upper = float(Magnitude_Upper)
     # Check that Magnitude_Upper is greater than Magnitude_Lower
     if (Magnitude_Lower != None) and (Magnitude_Upper != None):
-        if Magnitude_Lower > Magnitude_Upper: return redirect("localhost:5000/index.html")
+        if Magnitude_Lower > Magnitude_Upper: return redirect("/")
 
     # Absolute Magnitude
     # Check if Absolute_Magnitude_Lower is null
@@ -221,7 +221,7 @@ def User_Query():
         Absolute_Magnitude_Upper = float(Absolute_Magnitude_Upper)
     # Check that Absolute_Magnitude_Upper is greater than Absolute_Magnitude_Lower
     if (Absolute_Magnitude_Lower != None) and (Absolute_Magnitude_Upper != None):
-        if Absolute_Magnitude_Lower > Absolute_Magnitude_Upper: return redirect("localhost:5000/index.html")
+        if Absolute_Magnitude_Lower > Absolute_Magnitude_Upper: return redirect("/")
 
     # Luminosity
     # Check if Luminosity_Lower is null
@@ -238,7 +238,7 @@ def User_Query():
         Luminosity_Upper = float(Luminosity_Upper)
     # Check that Luminosity_Upper is greater than Luminosity_Lower
     if (Luminosity_Lower != None) and (Luminosity_Upper != None):
-        if Luminosity_Lower > Luminosity_Upper: return redirect("localhost:5000/index.html")
+        if Luminosity_Lower > Luminosity_Upper: return redirect("/")
 
     # Minimum Variable Magnitude
     # Check if Min_Magnitude_Lower is null
@@ -255,7 +255,7 @@ def User_Query():
         Min_Magnitude_Upper = float(Min_Magnitude_Upper)
     # Check that Min_Magnitude_Upper is greater than Min_Magnitude_Lower
     if (Min_Magnitude_Lower != None) and (Min_Magnitude_Upper != None):
-        if Min_Magnitude_Lower > Min_Magnitude_Upper: return redirect("localhost:5000/index.html")
+        if Min_Magnitude_Lower > Min_Magnitude_Upper: return redirect("/")
 
     # Maximum Variable Magnitude
     # Check if Max_Magnitude_Lower is null
@@ -272,7 +272,7 @@ def User_Query():
         Max_Magnitude_Upper = float(Max_Magnitude_Upper)
     # Check that Max_Magnitude_Upper is greater than Max_Magnitude_Lower
     if (Max_Magnitude_Lower != None) and (Max_Magnitude_Upper != None):
-        if Max_Magnitude_Lower > Max_Magnitude_Upper: return redirect("localhost:5000/index.html")
+        if Max_Magnitude_Lower > Max_Magnitude_Upper: return redirect("/")
 
     # Check if CompanionID is null
     try:
@@ -299,27 +299,45 @@ def User_Query():
     # It's important to limit the distance because when distance = 100000 it throws the entire scale off
     query += ("AND Distance <= 50000; ")
     print(query)
-    # Query the database
-    results= NovaBackend.NovaQuery(query)
-    #Transpose dataframe to be passed out to our single star and multiple star search
-    resultdf=results
-    resultdf = resultdf.T
+    # Query the database and convert the results to a dictionary.
+    resultsdf= NovaBackend.NovaQuery(query)
+    results= resultsdf.to_dict()
     # Direct the results to the appropriate webpage based on the number of stars returned.
     if len(results["HipparcosID"]) == 0:
         print("No search results")
-        return redirect("localhost:5000/index.html")    # There were no search results
+        return redirect("/")    # There were no search results
     elif len(results["HipparcosID"]) == 1:
         print("Only 1 search result")
-        return render_template('SINGLE_STAR.HTML', result=resultdf)   # Go to the single star results page, passing transposed df into variable result to be used in the referenced webpage
+        if results["HipparcosID"][0] == 0:
+            picture = "Sun.jpg"
+        elif results["SpectralType"][0][0] == "O":
+            picture = "O Class Star.png"
+        elif results["SpectralType"][0][0] == "B":
+            picture = "B Class Star.png"
+        elif results["SpectralType"][0][0] == "A":
+            picture = "A Class Star.png"
+        elif results["SpectralType"][0][0] == "F":
+            picture = "F Class Star.png"
+        elif results["SpectralType"][0][0] == "G":
+            picture = "G Class Star.png"
+        elif results["SpectralType"][0][0] == "K":
+            picture = "K Class Star.png"
+        elif results["SpectralType"][0][0] == "M":
+            picture = "M Class Star.png"
+        elif results["SpectralType"][0][0] == "C":
+            picture = "C Class Star.png"
+        else:
+            picture = "Question.gif"
+        return render_template("single_star.html", result=results, pic= picture)   # Go to the single star results page
     elif len(results["HipparcosID"]) == 2:
         print("Multiple search results")
-        return redirect("localhost:5000/comparison.html")  # Go to the comparison results page
+        return redirect("comparison.html")  # Go to the comparison results page
     else:
         # Generate a 3D scatterplot of the results and display it on the multistar results page
-        NovaBackend.MultiStarPlot(results)
+        NovaBackend.MultiStarPlot(resultsdf)
         #return redirect("localhost:5000/multistar.html")
 
-    return redirect("localhost:5000/index.html")
+    return redirect("/")
 
 ## Starts the server for serving Rest Services
 if __name__ == '__main__':
