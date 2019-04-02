@@ -331,7 +331,27 @@ def User_Query():
         return render_template("single_star.html", result=results, pic= picture)   # Go to the single star results page
     elif len(results["HipparcosID"]) == 2:
         print("Multiple search results")
-        return redirect("comparison.html")  # Go to the comparison results page
+        if results["HipparcosID"][0] == 0:
+            picture = "Sun.jpg"
+        elif results["SpectralType"][0][0] == "O":
+            picture = "O Class Star.png"
+        elif results["SpectralType"][0][0] == "B":
+            picture = "B Class Star.png"
+        elif results["SpectralType"][0][0] == "A":
+            picture = "A Class Star.png"
+        elif results["SpectralType"][0][0] == "F":
+            picture = "F Class Star.png"
+        elif results["SpectralType"][0][0] == "G":
+            picture = "G Class Star.png"
+        elif results["SpectralType"][0][0] == "K":
+            picture = "K Class Star.png"
+        elif results["SpectralType"][0][0] == "M":
+            picture = "M Class Star.png"
+        elif results["SpectralType"][0][0] == "C":
+            picture = "C Class Star.png"
+        else:
+            picture = "Question.gif"
+        return render_template("comparison.html", result=results, pic=picture)  # Go to the comparison results page
     else:
         # Generate a 3D scatterplot of the results and display it on the multistar results page
         NovaBackend.MultiStarPlot(resultsdf)
