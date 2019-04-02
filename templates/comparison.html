@@ -52,54 +52,55 @@
 <tr>
 <td><div class="container" style="width:100%;"><img src= "{{pic}}" width=100% height=100%><div class="top">{{result.ProperName[0]}}</div></div></td>
  
-<td rowspan=2>          
-
-            <b> Link to star on left</b>
-            <br>
-            <b> Link to star on right</b><br>
-<center><a href="index.html">New Search</a></center>
+<td rowspan=1 bgcolor = #333399>          
 </td>
+
 <td><div class="container" style="width:100%;"><img src= "{{pic}}" width=100% height=100%><div class="top">{{result.ProperName[1]}}</div></div></td>
 </tr>
 
 
 <tr>
-<td>Star1 Ouput<br>
+<td>
 <b>HipparcosID:</b>		{{result.HipparcosID[0] | safe}}  <br>
 <b>Constellation:</b>		{{result.ConstellationID[0] | safe}} <br>
 <b>Spectral Type:</b>		{{result.SpectralType[0] | safe}} <br>
 <b>Distance:</b>		{{result.Distance[0] | safe}} <br>
 <b>Coordinates</b>
-		<br><b>RA:</b>		{{result.RA[0] | safe}} <br>
+		<br><b>RA:</b>		{{result.RA[0] | safe}} 
 		<br><b>Dec:</b>		 {{result.Dec[0] | safe}} <br>
 <b>Magnitude:</b>		{{result.Magnitude[0] | safe}} <br>
 <b>Absolute Magnitude:</b>		{{result.AbsoluteMagnitude[0] | safe}}
-<b>Luminosity:</b>		{{result.Luminosity[0] | safe}}
-<b>Variable Star Information</b> <br>
-		<br><b>Minimum Magnitude:</b>		{{result.VariableMinMagnitude[0] | safe}} <br>
+<b>Luminosity:</b>		{{result.Luminosity[0] | safe}} <br>
+<b>Variable Star Information</b> 
+		<br><b>Minimum Magnitude:</b>		{{result.VariableMinMagnitude[0] | safe}} 
 		<br><b>Maximum Magnitude:</b>		 {{result.VariableMaxMagnitude[0] | safe}} <br>
 <b>Companion Stars:</b>		{{result.CompanionID[0] | safe}} <br>
-<b>Star System Name:</b>		{{result.BaseName[0] | safe}}
+<b>Star System Name:</b>		{{result.BaseName[0] | safe}} <br>
 </td>
-
-<td>Star2 Ouput<br>
+<td></td>
+<td>
 <b>HipparcosID:</b>		{{result.HipparcosID[1] | safe}}  <br>
 <b>Constellation:</b>		{{result.ConstellationID[1] | safe}} <br>
 <b>Spectral Type:</b>		{{result.SpectralType[1] | safe}} <br>
 <b>Distance:</b>		{{result.Distance[1] | safe}} <br>
 <b>Coordinates</b>
-		<br><b>RA:</b>		{{result.RA[1] | safe}} <br>
+		<br><b>RA:</b>		{{result.RA[1] | safe}} 
 		<br><b>Dec:</b>		 {{result.Dec[1] | safe}} <br>
 <b>Magnitude:</b>		{{result.Magnitude[1] | safe}} <br>
-<b>Absolute Magnitude:</b>		{{result.AbsoluteMagnitude[1] | safe}}
-<b>Luminosity:</b>		{{result.Luminosity[1] | safe}}
-<b>Variable Star Information</b> <br>
-		<br><b>Minimum Magnitude:</b>		{{result.VariableMinMagnitude[1] | safe}} <br>
+<b>Absolute Magnitude:</b>		{{result.AbsoluteMagnitude[1] | safe}} <br>
+<b>Luminosity:</b>		{{result.Luminosity[1] | safe}} <br>
+<b>Variable Star Information</b> 
+		<br><b>Minimum Magnitude:</b>		{{result.VariableMinMagnitude[1] | safe}} 
 		<br><b>Maximum Magnitude:</b>		 {{result.VariableMaxMagnitude[1] | safe}} <br>
 <b>Companion Stars:</b>		{{result.CompanionID[1] | safe}} <br>
-<b>Star System Name:</b>		{{result.BaseName[1] | safe}}
+<b>Star System Name:</b>		{{result.BaseName[1] | safe}} <br>
 
 
+</td>
+</tr>
+<tr >
+<td colspan='3'>
+<center><a href="index.html">New Search</a></center>
 </td>
 </tr>
 </table>
