@@ -1,86 +1,106 @@
+<!doctype html>
 <html>
+	<head>
+		<title>Nova - Comparison </title>
+		<style>
+			body {background-color: #5a5175;}
+			table {background-color: #736c89;
+				color:white; width:150;
+				margin-left:10%;
+				margin-right:10%}
+			@font-face {font-family: myFirstFont;
+				src: url(andromeda.ttf);}
+			.container {position: relative;
+				text-align: center;
+				color: white;
+				font-family: myFirstFont;
+				background-color: #414189;
+				font-size: 50;}
+			a:link, a:visited {
+  				background-color: #414189;
+  				color: white;
+  				padding: 15px 25px;
+  				text-align: center;
+  				text-decoration: none;
+ 				 display: inline-block;
+				}
 
-	
-<head>
-		
-<title> Comparison between Two Stars </title>
+			a:hover, a:active {
+  				background-color:red;
+				}
 
+		</style>
+	</head>
 
-			
-<style>
-				
-body {background-color: #5a5175;}
-				
-table {background-color: #736c89;
-					
-color:white; width:80%;
- height:600;   					
-margin-left:10%;
-    					
-margin-right:10%}
-			
-</style>
-
-	
-</head>
+   <body>
 
 
 
-<body>
 
-<br>
-<br>
 
 
 <table>
-
-    
-
 <tr bgcolor = #333399>
  
-<td>Column 1 </td>
+<td>Star 1 </td>
 <td>Comparison</td>
  
-<td>Column 2 </td>
+<td>Star 2 </td>
 </tr>
   
 
 <tr>
-<td>matplot output</td>
+<td><div class="container" style="width:100%;"><img src= "{{pic}}" width=100% height=100%><div class="top">{{result.ProperName[0]}}</div></div></td>
  
-<td rowspan=2>          <b>_____________  HipparcosID ______________ </b>
-            <br>
-            <b>______________ Constellation _____________</b>
-            <br>
-            <b>______________ Distance ______________</b>
-            <br>
-            <b>______________ Magnitude ______________</b>
-            <br>
-            <b>______________ Absolute Magnitude _____________</b>
-            <br>
-            <b>______________ Luminosity ______________</b>
-            <br>
-            <b> <br>      <center>   Variable Magnitude </center>           </b>
-            <br>
-            <input type = "number" name = "min" >
-            <b> Min </b>
-            <input type = "number" name = "min">
-            <br>
-            <input type = "number" name = "max" >
-            <b> Max </b>
-            <input type = "number" name = "max">
-            <br>
+<td rowspan=2>          
+
             <b> Link to star on left</b>
             <br>
-            <b> Link to star on right</b>
-    </td>
-<td>matplot output</td>
+            <b> Link to star on right</b><br>
+<center><a href="index.html">New Search</a></center>
+</td>
+<td><div class="container" style="width:100%;"><img src= "{{pic}}" width=100% height=100%><div class="top">{{result.ProperName[1]}}</div></div></td>
 </tr>
 
 
 <tr>
-<td>jpeg image here</td>
+<td>Star1 Ouput<br>
+<b>HipparcosID:</b>		{{result.HipparcosID[0] | safe}}  <br>
+<b>Constellation:</b>		{{result.ConstellationID[0] | safe}} <br>
+<b>Spectral Type:</b>		{{result.SpectralType[0] | safe}} <br>
+<b>Distance:</b>		{{result.Distance[0] | safe}} <br>
+<b>Coordinates</b>
+		<br><b>RA:</b>		{{result.RA[0] | safe}} <br>
+		<br><b>Dec:</b>		 {{result.Dec[0] | safe}} <br>
+<b>Magnitude:</b>		{{result.Magnitude[0] | safe}} <br>
+<b>Absolute Magnitude:</b>		{{result.AbsoluteMagnitude[0] | safe}}
+<b>Luminosity:</b>		{{result.Luminosity[0] | safe}}
+<b>Variable Star Information</b> <br>
+		<br><b>Minimum Magnitude:</b>		{{result.VariableMinMagnitude[0] | safe}} <br>
+		<br><b>Maximum Magnitude:</b>		 {{result.VariableMaxMagnitude[0] | safe}} <br>
+<b>Companion Stars:</b>		{{result.CompanionID[0] | safe}} <br>
+<b>Star System Name:</b>		{{result.BaseName[0] | safe}}
+</td>
 
-<td>jpeg image here</td>
+<td>Star2 Ouput<br>
+<b>HipparcosID:</b>		{{result.HipparcosID[1] | safe}}  <br>
+<b>Constellation:</b>		{{result.ConstellationID[1] | safe}} <br>
+<b>Spectral Type:</b>		{{result.SpectralType[1] | safe}} <br>
+<b>Distance:</b>		{{result.Distance[1] | safe}} <br>
+<b>Coordinates</b>
+		<br><b>RA:</b>		{{result.RA[1] | safe}} <br>
+		<br><b>Dec:</b>		 {{result.Dec[1] | safe}} <br>
+<b>Magnitude:</b>		{{result.Magnitude[1] | safe}} <br>
+<b>Absolute Magnitude:</b>		{{result.AbsoluteMagnitude[1] | safe}}
+<b>Luminosity:</b>		{{result.Luminosity[1] | safe}}
+<b>Variable Star Information</b> <br>
+		<br><b>Minimum Magnitude:</b>		{{result.VariableMinMagnitude[1] | safe}} <br>
+		<br><b>Maximum Magnitude:</b>		 {{result.VariableMaxMagnitude[1] | safe}} <br>
+<b>Companion Stars:</b>		{{result.CompanionID[1] | safe}} <br>
+<b>Star System Name:</b>		{{result.BaseName[1] | safe}}
+
+
+</td>
 </tr>
 </table>
+</html>
