@@ -2,6 +2,7 @@ from flask import Flask
 import pandas as pd
 from flask import jsonify
 from flask import Flask, render_template, request, redirect
+import matplotlib.pyplot as plt
 import logging
 import NovaBackend
 
@@ -301,61 +302,26 @@ def User_Query():
     print(query)
     # Query the database and convert the results to a dictionary.
     resultsdf= NovaBackend.NovaQuery(query)
-    results= resultsdf.to_dict()
+    results= resultsdf.to_dict('list')
     # Direct the results to the appropriate webpage based on the number of stars returned.
     if len(results["HipparcosID"]) == 0:
         print("No search results")
         return redirect("/")    # There were no search results
     elif len(results["HipparcosID"]) == 1:
-        print("Only 1 search result")
-        if results["HipparcosID"][0] == 0:
-            picture = "Sun.jpg"
-        elif results["SpectralType"][0][0] == "O":
-            picture = "O Class Star.png"
-        elif results["SpectralType"][0][0] == "B":
-            picture = "B Class Star.png"
-        elif results["SpectralType"][0][0] == "A":
-            picture = "A Class Star.png"
-        elif results["SpectralType"][0][0] == "F":
-            picture = "F Class Star.png"
-        elif results["SpectralType"][0][0] == "G":
-            picture = "G Class Star.png"
-        elif results["SpectralType"][0][0] == "K":
-            picture = "K Class Star.png"
-        elif results["SpectralType"][0][0] == "M":
-            picture = "M Class Star.png"
-        elif results["SpectralType"][0][0] == "C":
-            picture = "C Class Star.png"
-        else:
-            picture = "Question.gif"
+        # Identify which picture to use based on spectral type
+        picture = NovaBackend.StarType2(results)
         return render_template("single_star.html", result=results, pic= picture)   # Go to the single star results page
     elif len(results["HipparcosID"]) == 2:
-        print("Multiple search results")
-        if results["HipparcosID"][0] == 0:
-            picture = "Sun.jpg"
-        elif results["SpectralType"][0][0] == "O":
-            picture = "O Class Star.png"
-        elif results["SpectralType"][0][0] == "B":
-            picture = "B Class Star.png"
-        elif results["SpectralType"][0][0] == "A":
-            picture = "A Class Star.png"
-        elif results["SpectralType"][0][0] == "F":
-            picture = "F Class Star.png"
-        elif results["SpectralType"][0][0] == "G":
-            picture = "G Class Star.png"
-        elif results["SpectralType"][0][0] == "K":
-            picture = "K Class Star.png"
-        elif results["SpectralType"][0][0] == "M":
-            picture = "M Class Star.png"
-        elif results["SpectralType"][0][0] == "C":
-            picture = "C Class Star.png"
-        else:
-            picture = "Question.gif"
-        return render_template("comparison.html", result=results, pic=picture)  # Go to the comparison results page
+        picture1 = NovaBackend.StarType2(resultsdf.iloc[0].to_dict())
+        picture2 = NovaBackend.StarType2(resultsdf.iloc[1].to_dict())
+        picture3 = "/ConstellationPictures/AND.gif"
+        picture4 = "/ConstellationPictures/ORI.gif"
+        return render_template("comparison.html", pic1= picture1, pic2= picture2, pic3= picture3, pic4= picture4)  # Go to the comparison results page
     else:
         # Generate a 3D scatterplot of the results and display it on the multistar results page
-        NovaBackend.MultiStarPlot(resultsdf)
-        #return redirect("localhost:5000/multistar.html")
+        scatterplot= NovaBackend.MultiStarPlot(resultsdf)
+        plt.show()
+        return render_template("multi_star.html", scatterplot= scatterplot)
 
     return redirect("/")
 

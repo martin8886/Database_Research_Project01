@@ -1,0 +1,245 @@
+<html>
+
+	<head>
+		<title>Nova</title>
+
+		<style>
+			body {background-color: #5a5175;}
+			table {background-color: #736c89;
+				color:white; width:80%;
+						margin-left:10%;
+						margin-right:10%}
+			td {align:left;}
+			p {font-family:myFirstFont;
+				 color:white;
+				 text-align:center;
+				 font-size: 26;}
+			@font-face {font-family: myFirstFont;
+					src: url(andromeda.ttf);}
+			td.names{font-family:myFirstFont;
+				align:right;
+				background-color: #414189;}
+			.container {position: relative;
+					text-align: center;
+					color: white;}
+			.top {font-family: myFirstFont;
+				font-size: 75;
+					position: absolute;
+				 top: 50px;
+					left: 150px;
+				}
+		</style>
+
+	</head>
+
+<body>
+
+<table>
+<tr><td><p><b>Explore the Cosmos</b></p></td>
+	<td rowspan ="13"><div class="container" style="width:100%;"><img src="download.gif" width=100% height=100%><div class="top">Nova DB</div></div></td>
+</tr>
+
+<tr><td>
+		<form action="{{ url_for('User_Query') }}" method="post">
+		<br>
+  		<b>Hipparcos ID:</b><br>
+  		<input type="number" name="HipparcosID" placeholder="1-113832" min="1" max="113832">
+
+</td></tr>
+<tr><td>
+  		<b>Constellation:</b>
+		<br>
+		<Select name="Constellation">
+			<option value=""></option>
+			<option value="Andromeda">Andromeda</option>
+  		<option value="Antlia">Antlia</option>
+  		<option value="Apus">Apus</option>
+ 			<option value="Aquila">Aquila</option>
+			<option value="Aquarius">Aquarius</option>
+  		<option value="Ara">Ara</option>
+  		<option value="Aries">Aries</option>
+ 			<option value="Auriga">Auriga</option>
+			<option value="Bootes">Bootes</option>
+  		<option value="Caelum">Caelum</option>
+  		<option value="Camelopardalis">Camelopardalis</option>
+ 			<option value="Capricornus">Capricornus</option>
+			<option value="Carina">Carina</option>
+  		<option value="Cassiopeia">Cassiopeia</option>
+  		<option value="Centaurus">Centaurus</option>
+ 			<option value="Cepheus">Cepheus</option>
+			<option value="Cetus">Cetus</option>
+  		<option value="Chamaeleon">Chamaeleon</option>
+  		<option value="Circinus">Circinus</option>
+ 			<option value="Canis Major">Canis Major</option>
+			<option value="Canis Minor">Canis Minor</option>
+  		<option value="Cancer">Cancer</option>
+  		<option value="Columba">Columba</option>
+ 			<option value="Coma Berenicies">Coma Berenicies</option>
+			<option value="Corona Australis">Corona Australis</option>
+  		<option value="Corona Borealis">Corona Borealis</option>
+  		<option value="Crater">Crater</option>
+ 			<option value="Crux">Crux</option>
+			<option value="Corvus">Corvus</option>
+  		<option value="Canes Vanatici">Canes Vanatici</option>
+  		<option value="Cygnus">Cygnus</option>
+ 			<option value="Delphinus">Delphinus</option>
+ 			<option value="Dorado">Dorado</option>
+ 			<option value="Draco">Draco</option>
+ 			<option value="Equuleus">Equuleus</option>
+ 			<option value="Eridanus">Eridanus</option>
+ 			<option value="Fornax">Fornax</option>
+ 			<option value="Gemini">Gemini</option>
+ 			<option value="Grus">Grus</option>
+ 			<option value="Hercules">Hercules</option>
+ 			<option value="Horologium">Horologium</option>
+ 			<option value="Hydra">Hydra</option>
+ 			<option value="Hydrus">Hydrus</option>
+ 			<option value="Indus">Indus</option>
+ 			<option value="Lacerta">Lacerta</option>
+ 			<option value="Leo">Leo</option>
+ 			<option value="Lepus">Lepus</option>
+ 			<option value="Libra">Libra</option>
+ 			<option value="Leo Minor">Leo Minor</option>
+ 			<option value="Lupus">Lupus</option>
+ 			<option value="Lynx">Lynx</option>
+ 			<option value="Lyra">Lyra</option>
+ 			<option value="Mensa">Mensa</option>
+ 			<option value="Microscopium">Microscopium</option>
+ 			<option value="Monoceros">Monoceros</option>
+ 			<option value="Musca">Musca</option>
+ 			<option value="Norma">Norma</option>
+ 			<option value="Octans">Octans</option>
+ 			<option value="Ophiuchus">Ophiuchus</option>
+ 			<option value="Orion">Orion</option>
+ 			<option value="Pavo">Pavo</option>
+ 			<option value="Pegasus">Pegasus</option>
+ 			<option value="Perseus">Perseus</option>
+ 			<option value="Phoenix">Phoenix</option>
+ 			<option value="Pictor">Pictor</option>
+ 			<option value="Piscis Austrinus">Piscis Austrinus</option>
+ 			<option value="Pisces">Pisces</option>
+ 			<option value="Puppis">Puppis</option>
+ 			<option value="Phxis">Phxis</option>
+ 			<option value="Reticulum">Reticulum</option>
+ 			<option value="Sculptor">Sculptor</option>
+ 			<option value="Scropius">Scropius</option>
+ 			<option value="Scutum">Scutum</option>
+ 			<option value="Serpens Caput">Serpens Caput</option>
+ 			<option value="Serpens Cauda">Serpens Cauda</option>
+ 			<option value="Sextans">Sextans</option>
+ 			<option value="Sagitta">Sagitta</option>
+ 			<option value="Sagittarius">Sagittarius</option>
+ 			<option value="Taurus">Taurus</option>
+ 			<option value="Telescopium">Telescopium</option>
+ 			<option value="Triangulum Australe">Triangulum Australe</option>
+ 			<option value="Triangulum">Triangulum</option>
+ 			<option value="Tucana">Tucana</option>
+ 			<option value="Ursa Major">Ursa Major</option>
+ 			<option value="Ursa Minor">Ursa Minor</option>
+ 			<option value="Vela">Vela</option>
+ 			<option value="Virgo">Virgo</option>
+ 			<option value="Volans">Volans</option>
+ 			<option value="Vulpecula">Vulpecula</option>
+		</select>
+
+</td></tr>
+<tr><td>
+		<b>Spectral Type:</b>
+		<br>
+			<Select name="SpectralType">
+				<option value=""></option>
+				<option value="O">O</option>
+				<option value="B">B</option>
+				<option value="A">A</option>
+				<option value="F">F</option>
+				<option value="G">G</option>
+				<option value="K">K</option>
+				<option value="M">M</option>
+				<option value="C">C</option>
+				<option value="U">Unknown</option>
+			</select>
+		<br>
+
+</td></tr>
+<tr><td>
+		<br><b>Distance: </b><br>
+		Between &nbsp;
+		<input type="number" name="Distance_Lower" size="11" placeholder="min" min= 0>&nbsp;And
+		<input type="number" name="Distance_Upper" size="11" placeholder="max" min= 0>&nbsp;pcs
+		<br>
+
+</td></tr>
+<tr><td>
+	<br><b>Coordinates:</b><br>
+	<b>RA:</b> Between &nbsp;
+	<input type="number" name="RA_Lower" size="11" placeholder="min" min= 0 max= 24>&nbsp;And
+	<input type="number" name="RA_Upper" size="11" placeholder="max" min= 0 max= 24>
+
+</td></tr>
+<tr><td>
+	<b>Dec:</b> Between &nbsp;
+	<input type="number" name="Dec_Lower" size="11" placeholder="min" min= -90 max= 90>&nbsp;And
+	<input type="number" name="Dec_Upper" size="11" placeholder="max" min= -90 max= 90>
+
+</td></tr>
+<tr><td>
+	<br><b>Magnitude:</b><br>
+	Between &nbsp;
+ 	<input type="number" name="Magnitude_Lower" size="11" placeholder="min">&nbsp;And
+	<input type="number" name="Magnitude_Upper" size="11" placeholder="max">
+
+</td></tr>
+<tr><td>
+	<b>Absolute Magnitude:</b><br>
+	Between &nbsp;
+ 	<input type="number" name="Absolute_Magnitude_Lower" size="11" placeholder="min">&nbsp;And
+	<input type="number" name="Absolute_Magnitude_Upper" size="11" placeholder="max">
+
+</td></tr>
+<tr><td>
+	<b>Luminosity:</b><br>
+	Between &nbsp;
+ 	<input type="number" name="Luminosity_Lower" size="11" placeholder="min">&nbsp;And
+	<input type="number" name="Luminosity_Upper" size="11" placeholder="max">&nbsp;Watts
+
+</td></tr>
+<tr><td>
+	<br><b>Variable Magnitude:</b><br>
+	<b>Minimum Magnitude:</b><br>
+	Between &nbsp;
+ 	<input type="number" name="Min_Magnitude_Lower" size="11" placeholder="lower bound">&nbsp;And
+	<input type="number" name="Min_Magnitude_Upper" size="11" placeholder="upper bound">
+
+</td></tr>
+<tr><td>
+	<b>Maximum Magnitude:</b><br>
+	Between &nbsp;
+ 	<input type="number" name="Max_Magnitude_Lower" size="11" placeholder="lower bound">&nbsp;And
+	<input type="number" name="Max_Magnitude_Upper" size="11" placeholder="upper bound">
+
+</td></tr>
+<tr><td>
+	<b>Companions:</b>
+	<br>
+	<Select name="CompanionID">
+		<option value=""></option>
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+	</select>
+	<br>
+
+</td></tr>
+<tr><td>
+		<br>
+		<center><input type="submit" value="Search"></center>
+  		</form>
+
+</td><td class="names" colspan="1">
+	PRESENTED BY MARTIN GARCIA, ADAM SCHEERER & ANDREW WILKINS
+</td></tr>
+
+</table>
+
+</body>
+</html>

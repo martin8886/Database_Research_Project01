@@ -195,4 +195,30 @@ def MultiStarPlot(results):
     ax.set_facecolor('black')
     ax.grid(False)
     ax.set_axis_off()
-    plt.show()
+    return(fig)
+    #plt.show()
+
+# This is another function to grab the spectral type to identify which picture to use.
+# This one only works for dictionarys
+def StarType2(results):
+    if results["HipparcosID"] == 0:
+        picture = "Sun Resized.jpg"
+    elif results["SpectralType"][0][0] == "O":
+        picture = "O Class Star Resized.png"
+    elif results["SpectralType"][0][0] == "B":
+        picture = "B Class Star Resized.png"
+    elif results["SpectralType"][0][0] == "A":
+        picture = "A Class Star Resized.png"
+    elif results["SpectralType"][0][0] == "F":
+        picture = "F Class Star Resized.png"
+    elif results["SpectralType"][0][0] == "G":
+        picture = "G Class Star Resized.png"
+    elif results["SpectralType"][0][0] == "K":
+        picture = "K Class Star Resized.png"
+    elif results["SpectralType"][0][0] == "M":
+        picture = "M Class Star Resized.png"
+    elif results["SpectralType"][0][0] == "C":
+        picture = "C Class Star Resized.png"
+    else:
+        picture = "Question Resized.jpg"
+    return(picture)
