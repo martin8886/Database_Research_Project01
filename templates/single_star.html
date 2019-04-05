@@ -41,50 +41,25 @@
 
 <table>
 	<tr>
-		<td><div class="container"><b>Nova DB: Star</b></div></td>  <!-- header -->
-		<td rowspan ="13"><div class="container" style="width:100%;"><img src= "{{pic}}" width=100% height=100%><div class="top">{{result.ProperName[0]}}</div></div></td>
-	</tr>
+		<td colspan= 3><div class="container"><b>Nova DB: Search results</b></div></td></tr>  <!-- header -->
 	<tr>
-		<td><b>HipparcosID:</b>		{{result.HipparcosID[0] | safe}}</td>
 	</tr>
-	<tr>
-		<td><b>Constellation:</b>		{{result.ConstellationID[0] | safe}}</td>
-	</tr>
-	<tr>
-		<td><b>Spectral Type:</b>		{{result.SpectralType[0] | safe}}</td>
-	</tr>
-	<tr>
-		<td><b>Distance:</b>		{{result.Distance[0] | safe}}</td>
-	</tr>
-	<tr>
-		<td><b>Coordinates</b>
-		<br><b>RA:</b>		{{result.RA[0] | safe}}
-		<br><b>Dec:</b>		 {{result.Dec[0] | safe}}</td>
-	</tr>
-	<tr>
-		<td><b>Magnitude:</b>		{{result.Magnitude[0] | safe}}</td>
-	</tr>
-	<tr>
-		<td><b>Absolute Magnitude:</b>		{{result.AbsoluteMagnitude[0] | safe}}</td>
-	</tr>
-	<tr>
-		<td><b>Luminosity:</b>		{{result.Luminosity[0] | safe}}</td>
-	</tr>
-	<tr>
-		<td><b>Variable Star Information</b>
-		<br><b>Minimum Magnitude:</b>		{{result.VariableMinMagnitude[0] | safe}}
-		<br><b>Maximum Magnitude:</b>		 {{result.VariableMaxMagnitude[0] | safe}}</td>
-	</tr>
-	<tr>
-		<td><b>Companion Stars:</b>		{{result.CompanionID[0] | safe}}</td>
-	</tr>
-	<tr>
-		<td><b>Star System Name:</b>		{{result.BaseName[0] | safe}}</td>
-	</tr>
-
-<tr>
-<td><center><a href="/">New Search</a></center></td>  <!-- new search, goes back to index.html -->
-</tr>
-<table>
-   </body>
+	<tr><td><b>HipparcosID:</b></td><td>{{result.HipparcosID[0] | safe}}</td><td rowspan ="16"><div class="container" style="width:100%;"><img src= "{{pic}}" width=100% height=100%><div class="top">{{result.ProperName[0]}}</div></div></td></tr>
+	<tr><td><b>Constellation:</b></td><td>{{result.ConstellationID[0] | safe}}</td></tr>
+	<tr><td><b>Spectral Type:</b></td><td>{{result.SpectralType[0] | safe}}</td></tr>
+	<tr><td><b>Distance:</b></td><td>{{result.Distance[0] | safe}}</td></tr><br>
+	<tr><td><b>Coordinates</b></td></tr>
+	<tr><td><b>RA:</b></td><td>{{result.RA[0] | safe}}</td></tr>
+	<tr><td><b>Dec:</b></td><td> {{result.Dec[0] | safe}}</td></tr><br>
+	<tr><td><b>Magnitude:</b></td><td>{{result.Magnitude[0] | safe}}</td></tr>
+	<tr><td><b>Absolute Magnitude:</b></td><td>{{result.AbsoluteMagnitude[0] | safe}}</td></tr>
+	<tr><td><b>Luminosity:</b></td><td>{{result.Luminosity[0] | safe}}</td></tr><br>
+	<tr><td><b>Variable Star Information</b></td></tr>
+	<tr><td><b>Minimum Magnitude:</b></td><td>{{result.VariableMinMagnitude[0] | safe}}</td></tr>
+	<tr><td><b>Maximum Magnitude:</b></td><td> {{result.VariableMaxMagnitude[0] | safe}}</td></tr><br>
+	<tr><td><b>Companion Stars:</b></td><td>{{result.CompanionID[0] | safe}}</td></tr>
+	<tr><td><b>Star System Name:</b></td><td>{{result.BaseName[0] | safe}}</td></tr>
+	<tr><td colspan= 2><center><a href="/">New Search</a></center></td></tr>  <!-- new search, goes back to index.html -->
+</table>
+</body>
 </html>
