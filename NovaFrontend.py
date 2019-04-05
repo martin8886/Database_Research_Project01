@@ -2,7 +2,7 @@ from flask import Flask
 import pandas as pd
 from flask import jsonify
 from flask import Flask, render_template, request, redirect
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt, mpld3
 import logging
 import NovaBackend
 
@@ -111,7 +111,7 @@ def User_Query():
         elif Constellation == "Pyxis": Constellation = "Pyx"
         elif Constellation == "Reticulum": Constellation = "Ret"
         elif Constellation == "Sculptor": Constellation = "Scl"
-        elif Constellation == "Scropius": Constellation = "Sco"
+        elif Constellation == "Scorpius": Constellation = "Sco"
         elif Constellation == "Scutum": Constellation = "Sct"
         elif Constellation == "Serpens Caput": Constellation = "Ser1"
         elif Constellation == "Serpens Cauda": Constellation = "Ser2"
@@ -309,19 +309,19 @@ def User_Query():
         return redirect("/")    # There were no search results
     elif len(results["HipparcosID"]) == 1:
         # Identify which picture to use based on spectral type
-        picture = NovaBackend.StarType2(results)
-        return render_template("single_star.html", result=results, pic= picture)   # Go to the single star results page
+        picture, placeholder = NovaBackend.StarPic(results)
+        return render_template("single_star.html", result= results, pic= picture)   # Go to the single star results page
     elif len(results["HipparcosID"]) == 2:
-        picture1 = NovaBackend.StarType2(resultsdf.iloc[0].to_dict())
-        picture2 = NovaBackend.StarType2(resultsdf.iloc[1].to_dict())
-        picture3 = "/ConstellationPictures/AND.gif"
-        picture4 = "/ConstellationPictures/ORI.gif"
-        return render_template("comparison.html", pic1= picture1, pic2= picture2, pic3= picture3, pic4= picture4)  # Go to the comparison results page
+        picture1, picture3 = NovaBackend.StarPic(resultsdf.iloc[0].to_dict())
+        picture2, picture4 = NovaBackend.StarPic(resultsdf.iloc[1].to_dict())
+        results["ConstellationID"][0]= NovaBackend.ConstellationName(resultsdf.iloc[0].to_dict())
+        results["ConstellationID"][1]= NovaBackend.ConstellationName(resultsdf.iloc[1].to_dict())
+        return render_template("comparison.html", result= results, pic1= picture1, pic2= picture2, pic3= picture3, pic4= picture4)  # Go to the comparison results page
     else:
         # Generate a 3D scatterplot of the results and display it on the multistar results page
         scatterplot= NovaBackend.MultiStarPlot(resultsdf)
         plt.show()
-        return render_template("multi_star.html", scatterplot= scatterplot)
+        return render_template("multi_star.html", result= results, scatterplot= scatterplot)
 
     return redirect("/")
 

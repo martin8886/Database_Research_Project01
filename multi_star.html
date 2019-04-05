@@ -42,24 +42,32 @@
 <table>
 	<tr>
 		<td><div class="container"><b>Search Results</b></div></td>  <!-- header -->
-		<td rowspan ="13"><div class="container" style="width:100%;"><img src= "{{scatterplot}}" width=100% height=100%><div class="top"></div></div></td>
+		<td rowspan ="5"><div class="container" style="width:100%;"><img src= "{{scatterplot}}" width=100% height=100%><div class="top"></div></div></td>
 	</tr>
   <tr>
 		<form>
     <td>
-			<Select name= "Star1">
+			<Select name= "Star1" style="width: 130px;">
+				<option disabled="disabled" selected="selected">Select a star ID</option>
+				{% for element in result.HipparcosID %}
+					<option style="color:black" value= "{{element}}">{{element}}</option>
+				{% endfor %}
 				<!-- HipparcosID for each returned star here -->
 			</Select>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<Select name= "Star2">
+			<Select name= "Star2" style="width: 130px;">
+				<option disabled="disabled" selected="selected">Select a star ID</option>
+				{% for element in result.HipparcosID %}
+					<option style="color:black" value= "{{element}}">{{element}}</option>
+				{% endfor %}
 				<!-- HipparcosID for each returned star here -->
 			</Select>
 		</td>
-		</form>
 	</tr>
+	</form>
 	<tr>
 		<td><center><a href="/">Go</a></center></td>  <!-- Go to single or comparison results -->
 	</tr>
