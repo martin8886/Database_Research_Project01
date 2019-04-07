@@ -43,11 +43,11 @@
 	<tr>
 		<td><div class="container"><b>Search Results</b></div></td>  <!-- -->
 
-		<td rowspan ="5"><div class="container" style="width:100%;"><img src= "/Scatterplot" width=100% height=100%><div class="top"></div></div></td>
+		<td rowspan ="6"><div class="container" style="width:100%;"><img src= "/Scatterplot" width=100% height=100%><div class="top"></div></div></td>
 	</tr>
   <tr>
 		<form action="{{ url_for('GoTo') }}" method="post">
-    <td>
+    <td>Inspect:<br>
 			<Select name= "Star1" style="width: 130px;">
 				<option disabled="disabled" selected="selected">Select a star ID</option>
 				{% for element in result.HipparcosID %}
@@ -58,7 +58,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>
+		<td>Compare:<br>
 			<Select name= "Star2" style="width: 130px;">
 				<option disabled="disabled" selected="selected">Select a star ID</option>
 				{% for element in result.HipparcosID %}
