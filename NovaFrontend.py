@@ -2,7 +2,7 @@ from flask import Flask
 import pandas as pd
 from flask import jsonify
 from flask import Flask, render_template, request, redirect
-import matplotlib.pyplot as plt, mpld3
+import matplotlib.pyplot as plt
 import logging
 import NovaBackend
 
@@ -307,21 +307,80 @@ def User_Query():
     if len(results["HipparcosID"]) == 0:
         print("No search results")
         return redirect("/")    # There were no search results
-    elif len(results["HipparcosID"]) == 1:
+    elif len(results["HipparcosID"]) == 1:   # Go to the single star results page
         # Identify which picture to use based on spectral type
         picture, placeholder = NovaBackend.StarPic(results)
-        return render_template("single_star.html", result= results, pic= picture)   # Go to the single star results page
-    elif len(results["HipparcosID"]) == 2:
+        return render_template("single_star.html", result= results, pic= picture)
+    elif len(results["HipparcosID"]) == 2:  # Go to the comparison results page
         picture1, picture3 = NovaBackend.StarPic(resultsdf.iloc[0].to_dict())
         picture2, picture4 = NovaBackend.StarPic(resultsdf.iloc[1].to_dict())
         results["ConstellationID"][0]= NovaBackend.ConstellationName(resultsdf.iloc[0].to_dict())
         results["ConstellationID"][1]= NovaBackend.ConstellationName(resultsdf.iloc[1].to_dict())
-        return render_template("comparison.html", result= results, pic1= picture1, pic2= picture2, pic3= picture3, pic4= picture4)  # Go to the comparison results page
-    else:
+        return render_template("comparison.html", result= results, pic1= picture1, pic2= picture2, pic3= picture3, pic4= picture4)
+    else:  # Go to the multi star results page
         # Generate a 3D scatterplot of the results and display it on the multistar results page
         scatterplot= NovaBackend.MultiStarPlot(resultsdf)
-        plt.show()
+        #plt.show()
         return render_template("multi_star.html", result= results, scatterplot= scatterplot)
+
+    return redirect("/")
+
+# multi_star.html will have some functionality too depending on how many stars the user selects
+@app.route('/GoTo', methods=['POST'])
+def GoTo():
+    try:
+        # Check if a value is present in star1
+        Star1_ID = int(request.form['Star1'])
+        query1 = ("SELECT * FROM Star WHERE `HipparcosID` = {} AND Distance <= 50000; ".format(Star1_ID))
+        resultsdf1= NovaBackend.NovaQuery(query1)
+        results1= resultsdf1.to_dict('list')
+    except:
+        Star1_ID= None
+        resultsdf1= None
+        results1= None
+    try:
+        # Check if a value is present in star2
+        Star2_ID = int(request.form['Star2'])
+        query2 = ("SELECT * FROM Star WHERE `HipparcosID` = {} AND Distance <= 50000; ".format(Star2_ID))
+        print(query2)
+        resultsdf2= NovaBackend.NovaQuery(query2)
+        results2= resultsdf2.to_dict('list')
+    except:
+        Star2_ID= None
+        resultsdf2= None
+        results2= None
+
+    # Once the selections have been made, format the input to be compatible with Backend functions
+    if (Star1_ID and not Star2_ID):       # Value present for first combobox, but not the second
+        resultsdf= resultsdf1
+        results= results1
+        print("Star1 and not Star2")
+    elif (Star2_ID and not Star1_ID):      # Value present for second combobox, but not the first
+        resultsdf= resultsdf2
+        results= results2
+        print("Star2 and not Star1")
+    elif (Star1_ID and Star2_ID):         # Values present in BOTH comboboxes
+        resultsdf= pd.concat([resultsdf1, resultsdf2], ignore_index= True)
+        results= results= resultsdf.to_dict('list')
+        print("Star1 and Star2")
+    else:                               # No values selected
+        print("Nothing selected")
+        return redirect("/")
+    # Then direct them to the right page.
+    if len(results["HipparcosID"]) == 0:
+        return redirect("/")
+    elif len(results["HipparcosID"]) == 1:   # Go to the single star results page
+        # Identify which picture to use based on spectral type
+        picture, placeholder = NovaBackend.StarPic(results)
+        return render_template("single_star.html", result= results, pic= picture)
+    elif len(results["HipparcosID"]) == 2:  # Go to the comparison results page
+        picture1, picture3 = NovaBackend.StarPic(resultsdf.iloc[0].to_dict())
+        picture2, picture4 = NovaBackend.StarPic(resultsdf.iloc[1].to_dict())
+        results["ConstellationID"][0]= NovaBackend.ConstellationName(resultsdf.iloc[0].to_dict())
+        results["ConstellationID"][1]= NovaBackend.ConstellationName(resultsdf.iloc[1].to_dict())
+        return render_template("comparison.html", result= results, pic1= picture1, pic2= picture2, pic3= picture3, pic4= picture4)
+    else:       # Stay right where you are
+        return redirect("/")
 
     return redirect("/")
 
