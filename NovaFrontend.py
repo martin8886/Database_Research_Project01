@@ -6,6 +6,11 @@ import matplotlib.pyplot as plt
 import logging
 import NovaBackend
 
+import io
+from flask import Response
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+
 # To Do list:
 # 1) Design webpage appearance
 #    Base it on the Layout Ideas.pptx                           -- DONE
@@ -301,6 +306,9 @@ def User_Query():
     query += ("AND Distance <= 50000; ")
     print(query)
     # Query the database and convert the results to a dictionary.
+
+    global resultsdf, results
+
     resultsdf= NovaBackend.NovaQuery(query)
     results= resultsdf.to_dict('list')
     # Direct the results to the appropriate webpage based on the number of stars returned.
@@ -319,11 +327,17 @@ def User_Query():
         return render_template("comparison.html", result= results, pic1= picture1, pic2= picture2, pic3= picture3, pic4= picture4)
     else:  # Go to the multi star results page
         # Generate a 3D scatterplot of the results and display it on the multistar results page
-        scatterplot= NovaBackend.MultiStarPlot(resultsdf)
-        #plt.show()
-        return render_template("multi_star.html", result= results, scatterplot= scatterplot)
-
+        return render_template("multi_star.html", result= results)
     return redirect("/")
+
+# Generate the scatterplot
+@app.route('/Scatterplot')
+def Scatterplot():
+    fig = NovaBackend.MultiStarPlot(resultsdf)
+    fig.subplots_adjust(left=0, right=1, top=1, bottom=0)   # Removes ugly white borders
+    output = io.BytesIO()   # Saves figure to binary instead of a filepath
+    FigureCanvas(fig).print_jpg(output)     # Not really sure what this does.
+    return Response(output.getvalue(), mimetype='image/png')
 
 # multi_star.html will have some functionality too depending on how many stars the user selects
 @app.route('/GoTo', methods=['POST'])
