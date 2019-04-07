@@ -1,15 +1,14 @@
 from flask import Flask
-import pandas as pd
-from flask import jsonify
-from flask import Flask, render_template, request, redirect
-import matplotlib.pyplot as plt
-import logging
-import NovaBackend
-
 import io
 from flask import Response
+from flask import jsonify
+import matplotlib.pyplot as plt
+from flask import Flask, render_template, request, redirect
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
+import pandas as pd
+import logging
+import NovaBackend
 
 # To Do list:
 # 1) Design webpage appearance
@@ -338,6 +337,15 @@ def Scatterplot():
     output = io.BytesIO()   # Saves figure to binary instead of a filepath
     FigureCanvas(fig).print_jpg(output)     # Not really sure what this does.
     return Response(output.getvalue(), mimetype='image/png')
+
+# Recreate the scatterplot and allow the user to rotate it.
+#@app.route('/Rotate', methods=["POST"])
+#def Rotate():
+#    print("This is happening")
+#    scatter = NovaBackend.MultiStarPlot(resultsdf)
+#    plt.ion()
+#    plt.show()
+#    return ('', 204)
 
 # multi_star.html will have some functionality too depending on how many stars the user selects
 @app.route('/GoTo', methods=['POST'])
