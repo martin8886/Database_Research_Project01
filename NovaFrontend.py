@@ -18,9 +18,9 @@ import NovaBackend
 # 3) Construct an SQL string that meets the search criteria     -- DONE
 # 4) Query NovaDB with the constructed string                   -- DONE
 # 5) Post the query results to the appropriate page on the website
-#    Single star: Star Summary Page                             -- in progress
-#    2 stars: Comparison Page                                   -- in progress
-#    More than 2 stars: Star Map Page                           -- in progress
+#    Single star: Star Summary Page                             -- DONE
+#    2 stars: Comparison Page                                   -- DONE
+#    More than 2 stars: Star Map Page                           -- DONE
 
 app= Flask(__name__,  static_url_path = "", static_folder = "templates")    # Required to run the website, file path for images added
 
@@ -316,6 +316,7 @@ def User_Query():
         return redirect("/")    # There were no search results
     elif len(results["HipparcosID"]) == 1:   # Go to the single star results page
         # Identify which picture to use based on spectral type
+        results["ConstellationID"][0]= NovaBackend.ConstellationName(resultsdf.iloc[0].to_dict())
         picture, placeholder = NovaBackend.StarPic(results)
         return render_template("single_star.html", result= results, pic= picture)
     elif len(results["HipparcosID"]) == 2:  # Go to the comparison results page
@@ -327,15 +328,18 @@ def User_Query():
     else:  # Go to the multi star results page
         # Generate a 3D scatterplot of the results and display it on the multistar results page
         return render_template("multi_star.html", result= results)
+
     return redirect("/")
 
 # Generate the scatterplot
 @app.route('/Scatterplot')
 def Scatterplot():
     fig = NovaBackend.MultiStarPlot(resultsdf)
+    plt.show()
     fig.subplots_adjust(left=0, right=1, top=1, bottom=0)   # Removes ugly white borders
     output = io.BytesIO()   # Saves figure to binary instead of a filepath
     FigureCanvas(fig).print_jpg(output)     # Not really sure what this does.
+
     return Response(output.getvalue(), mimetype='image/png')
 
 # Recreate the scatterplot and allow the user to rotate it.
